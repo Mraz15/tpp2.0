@@ -1,5 +1,7 @@
 $(document).ready(function(){
 "use strict";
+
+//test
  
 var tot = {
 	count: 1
@@ -876,7 +878,7 @@ $.ajaxSetup({
     	});
 	});*/
 
-$('#submit').click(function(){
+/*$('#submit').click(function(){
 	var json_data = { "docNum": orderDocNum[0], "docType" : doc.docType,"cert" : cert.val, "legal" : legal.val }
 	$.post( "/email",  JSON.stringify(json_data), 
 	function(xml, textStatus, xhr){
@@ -887,9 +889,52 @@ $('#submit').click(function(){
 			alert("Submission Failed, Please Submit again!");
 		}
 	});
+});*/
 
 
+$('#submit').click(function(){
+	if (orderDocNum.length > 1){
+		json_data = []
+		for (var i=0; i<orderDocNum.length; i++){
+			json_data.push({
+				docNum: orderDocNum[i],
+				docType: orderDocType[i]
+			})
+			/*newElement= {};
+			newElement["docNum"] = orderDocNum[i];
+			newElement["docType"] = orderDocType [i]
+			json_data.push(newElement);*/
+
+		}
+		$.post( "/email",  JSON.stringify(json_data), 
+		function(xml, textStatus, xhr){
+			if(xhr.status === 200){
+				alert("Successfully Submitted!");
+				window.location.replace("/thanks?order=" + JSON.stringify(json_data));
+			} else{
+				alert("Submission Failed, Please Submit again!");
+			}
+		});
+	} else {
+		var json_data = { "docNum": orderDocNum[0], "docType" : orderDocType[0]}
+		$.post( "/email",  JSON.stringify(json_data), 
+		function(xml, textStatus, xhr){
+			if(xhr.status === 200){
+				alert("Successfully Submitted!");
+				window.location.replace("/thanks?order=" + JSON.stringify(json_data));
+			} else{
+				alert("Submission Failed, Please Submit again!");
+			}
+		});
+	}
 });
+
+
+/*for (i=0; i<length(orderDocNum); i++){
+	var json_data = {"docNum": orderDocNum[i], "docType": orderDocType[i]}
+}*/
+
+
 });
 
 

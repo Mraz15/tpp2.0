@@ -6,11 +6,15 @@
             <h1 style=" color: white !important">Thank you for your order!</h1>
         </div>
     </div>
-     <div class="container">
+     <div class="container" id="test">
         <h3>Document 1: </h3>
-        {% for key, value in order.items %}
-            <li>{{ key }} : {{ value }} </li> 
+
+        {% for item in order %}
+            <tr>
+            {{ item.docType }}
+            </tr>
         {% endfor %}
+             
     </div>
     </div>
 </body>
