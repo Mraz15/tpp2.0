@@ -1,21 +1,124 @@
-{% extends "personal/header.html" %}
- {% block content %}
-<body>
-    <div class="container">
-        <div style="background-color: #245580 !important" class="jumbotron">
-            <h1 style=" color: white !important">Thank you for your order!</h1>
-        </div>
-    </div>
-     <div class="container" id="test">
-        <h3>Document 1: </h3>
 
-        {% for item in order %}
+
+{% extends "personal/header.html" %}
+
+
+
+
+{% block content %}
+
+
+
+<div class="container">
+         <div class="jumbotron">
+        <h1>Order Review</h1>
+        <p>Please double check all contact information, document numbers, and options. Use the EDIT button to make any corrections, if everything looks good please scroll down and hit SUBMIT and your order will be processed. Thank you!</p>
+        </div>
+</div>
+
+<div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
+    <div style="background-color: #245580 !important" class="panel-heading">
+        <h3 style=" color: white !important" class="panel-title text-center">Contact Information</h3>
+    </div>
+    <table class="table">
+        <thead>
+            <th>First Name</th>
+            <th>Company</th>
+            <th>Address</th>
+        </thead>
+        <tr>
+            <td id="firstName">Zachery</td>
+            <td id="company">The Patent Place, Inc.</td>
+            <td id="address">301 Franklin St., 3rd Floor Alexandria, VA 22314</td>
+        </tr>
+        <thead>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Reference #</th>
+        </thead>
+        <tr>
+            <td id="lastName">Mraz</td>
+            <td id="Email">zac@thepatentplace.com</td>
+            <td id="ref">18081901</td>
+        </tr>
+    </table>
+    </div>
+
+    
+        
+
+        <div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
+                <div style="background-color: #245580 !important" class="panel-heading">
+                    <h3 style=" color: white !important" class="panel-title text-center">Order Information</h3>
+                </div>
+                {% for item in order %}
+            <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
+                <table class="table">       
+        
+            <thead>
+                <th class="text-center" colspan = "2">
+                    Document {{ forloop.counter }}
+                </th>
+            </thead>
             <tr>
-            {{ item.docType }}
+                <td>Document Type</td>
+                <td>{{ item.docType }}</td>
             </tr>
+            <tr>
+                <td>Document Number</td>
+                <td>{{ item.docNum }}</td>
+            </tr>
+            <tr>
+                    <td>Certified</td>
+                    <td>{{item.docCert}}</td>
+            </tr>
+            <tr>
+                    <td>Legalization</td>
+                    <td>{{ item.docLegal }}</td>
+            </tr>
+            <tr>
+                    <td>Country</td>
+                    <td>{{ item.docCountry }}</td>
+            </tr>
+            <tr>
+                    <td>Number of Copies</td>
+                    <td>{{ item.docNumofCopies }}</td>
+            </tr>
+            <tr>
+                    <td>Document Media</td>
+                    <td>{{ item.docMedia }}</td>
+            </tr>
+            <tr>
+                    <td>Forward to Associate</td>
+                    <td>{{ item.docForward }}</td>
+            </tr>
+            <tr>
+                    <td>Email a PDF Copy</td>
+                    <td>{{ item.docEmail }}</td>
+            </tr>
+            <tr>
+                    <td>Cost</td>
+                    <td>{{ item.docCost }}</td>
+            </tr>
+        </table>
+        <hr>
+        </div>
+        
+        
         {% endfor %}
-             
-    </div>
-    </div>
-</body>
-{% endblock %}
+        </div>
+   
+
+    
+    
+    
+    
+ 
+<!--<div class="form-group text-center" id="edit">
+    <a role="button" href="/uspto_docs" class="btn btn-primary" id='editt'>Edit Order</a>
+</div>
+</div>-->
+
+    
+
+{% endblock %}	

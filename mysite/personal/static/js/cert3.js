@@ -898,12 +898,16 @@ $('#submit').click(function(){
 		for (var i=0; i<orderDocNum.length; i++){
 			json_data.push({
 				docNum: orderDocNum[i],
-				docType: orderDocType[i]
+				docType: orderDocType[i],
+				docCert: orderCert[i],
+				docLegal: orderLegal[i],
+				docCountry: orderCountry[i],
+				docNumofCopies: orderNumOfCopies[i],
+				docMedia: orderMedia[i],
+				docForward: orderForward[i],
+				docEmail: orderEmailCopy[i],
+				docCost: orderCost[i]
 			})
-			/*newElement= {};
-			newElement["docNum"] = orderDocNum[i];
-			newElement["docType"] = orderDocType [i]
-			json_data.push(newElement);*/
 
 		}
 		$.post( "/email",  JSON.stringify(json_data), 
