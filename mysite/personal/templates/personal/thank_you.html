@@ -1,19 +1,30 @@
-
-
 {% extends "personal/header.html" %}
 
 
 
 
 {% block content %}
+{% load staticfiles %}
 
+{% csrf_token %}
+<script type="text/javascript">
+// using jQuery
+var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+</script>
+
+<head>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'js/thanks.js' %}"></script>
+</head>
 
 
 <div class="container">
-         <div class="jumbotron">
+    <div class="jumbotron">
         <h1>Order Review</h1>
-        <p>Please double check all contact information, document numbers, and options. Use the EDIT button to make any corrections, if everything looks good please scroll down and hit SUBMIT and your order will be processed. Thank you!</p>
-        </div>
+        <p>YOUR ORDER HAS NOT BEEN SUBMITTED YET! Please double check all contact information, document numbers, and options. Use the EDIT button to make any
+            corrections, if everything looks good please scroll down and hit SUBMIT and your order will be processed.
+            Thank you!</p>
+    </div>
 </div>
 
 <div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
@@ -42,22 +53,22 @@
             <td id="ref">{{order.0.ref}}</td>
         </tr>
     </table>
+</div>
+
+
+
+
+<div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
+    <div style="background-color: #245580 !important" class="panel-heading">
+        <h3 style=" color: white !important" class="panel-title text-center">Order Information</h3>
     </div>
+    {% for item in order %}
+    {% if forloop.counter >= 2 %}
+    <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
+        <table class="table">
 
-    
-        
-
-        <div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
-                <div style="background-color: #245580 !important" class="panel-heading">
-                    <h3 style=" color: white !important" class="panel-title text-center">Order Information</h3>
-                </div>
-                {% for item in order %}
-                {% if forloop.counter >= 2 %}
-            <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
-                <table class="table">       
-                
             <thead>
-                <th class="text-center" colspan = "2">
+                <th class="text-center" colspan="2">
                     Document {{ item.counter}}
                 </th>
             </thead>
@@ -70,56 +81,51 @@
                 <td>{{ item.docNum }}</td>
             </tr>
             <tr>
-                    <td>Certified</td>
-                    <td>{{item.docCert}}</td>
+                <td>Certified</td>
+                <td>{{item.docCert}}</td>
             </tr>
             <tr>
-                    <td>Legalization</td>
-                    <td>{{ item.docLegal }}</td>
+                <td>Legalization</td>
+                <td>{{ item.docLegal }}</td>
             </tr>
             <tr>
-                    <td>Country</td>
-                    <td>{{ item.docCountry }}</td>
+                <td>Country</td>
+                <td>{{ item.docCountry }}</td>
             </tr>
             <tr>
-                    <td>Number of Copies</td>
-                    <td>{{ item.docNumofCopies }}</td>
+                <td>Number of Copies</td>
+                <td>{{ item.docNumofCopies }}</td>
             </tr>
             <tr>
-                    <td>Document Media</td>
-                    <td>{{ item.docMedia }}</td>
+                <td>Document Media</td>
+                <td>{{ item.docMedia }}</td>
             </tr>
             <tr>
-                    <td>Forward to Associate</td>
-                    <td>{{ item.docForward }}</td>
+                <td>Forward to Associate</td>
+                <td>{{ item.docForward }}</td>
             </tr>
             <tr>
-                    <td>Email a PDF Copy</td>
-                    <td>{{ item.docEmail }}</td>
+                <td>Email a PDF Copy</td>
+                <td>{{ item.docEmail }}</td>
             </tr>
             <tr>
-                    <td>Cost</td>
-                    <td>{{ item.docCost }}</td>
+                <td>Cost</td>
+                <td>{{ item.docCost }}</td>
             </tr>
         </table>
         <hr>
-        </div>
-        
-        {% endif %}
-        {% endfor %}
-        </div>
-   
+    </div>
 
-    
-    
-    
-    
- 
-<!--<div class="form-group text-center" id="edit">
-    <a role="button" href="/uspto_docs" class="btn btn-primary" id='editt'>Edit Order</a>
+    {% endif %}
+    {% endfor %}
+
 </div>
-</div>-->
+<div>
+        <a role="button" href="/uspto_docs" class="btn btn-primary col-lg-2 col-lg-offset-3 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
+        id='edit'>Edit Order</a>
+    <a role="button" class="btn btn-primary col-lg-2 col-lg-offset-2 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
+        id='submit'>Submit Order</a>
+</div>
 
-    
 
-{% endblock %}	
+{% endblock %}
