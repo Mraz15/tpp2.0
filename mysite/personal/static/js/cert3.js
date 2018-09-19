@@ -894,9 +894,20 @@ $.ajaxSetup({
 
 $('#submit').click(function(){
 	if (orderDocNum.length > 1){
+		var counter2 = 0;
 		json_data = []
+		json_data.push({
+			first_Name: $('#firstName').val(),
+			last_Name: $('#last_name').val(),
+			company: $('#company_name').val(),
+			address: $('#address').val(),
+			email: $('#email').val(),
+			ref: $('#ref_num').val()
+		})
 		for (var i=0; i<orderDocNum.length; i++){
+			counter2 ++
 			json_data.push({
+				counter: counter2,
 				docNum: orderDocNum[i],
 				docType: orderDocType[i],
 				docCert: orderCert[i],
@@ -910,6 +921,7 @@ $('#submit').click(function(){
 			})
 
 		}
+		
 		$.post( "/email",  JSON.stringify(json_data), 
 		function(xml, textStatus, xhr){
 			if(xhr.status === 200){

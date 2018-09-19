@@ -27,9 +27,9 @@
             <th>Address</th>
         </thead>
         <tr>
-            <td id="firstName">Zachery</td>
-            <td id="company">The Patent Place, Inc.</td>
-            <td id="address">301 Franklin St., 3rd Floor Alexandria, VA 22314</td>
+            <td id="firstName">{{order.0.first_Name}}</td>
+            <td id="company">{{ order.0.company }}</td>
+            <td id="address">{{order.0.address}}</td>
         </tr>
         <thead>
             <th>Last Name</th>
@@ -37,9 +37,9 @@
             <th>Reference #</th>
         </thead>
         <tr>
-            <td id="lastName">Mraz</td>
-            <td id="Email">zac@thepatentplace.com</td>
-            <td id="ref">18081901</td>
+            <td id="lastName">{{order.0.last_Name}}</td>
+            <td id="Email">{{order.0.email}}</td>
+            <td id="ref">{{order.0.ref}}</td>
         </tr>
     </table>
     </div>
@@ -52,12 +52,13 @@
                     <h3 style=" color: white !important" class="panel-title text-center">Order Information</h3>
                 </div>
                 {% for item in order %}
+                {% if forloop.counter >= 2 %}
             <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
                 <table class="table">       
-        
+                
             <thead>
                 <th class="text-center" colspan = "2">
-                    Document {{ forloop.counter }}
+                    Document {{ item.counter}}
                 </th>
             </thead>
             <tr>
@@ -104,7 +105,7 @@
         <hr>
         </div>
         
-        
+        {% endif %}
         {% endfor %}
         </div>
    

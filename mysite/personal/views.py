@@ -114,14 +114,14 @@ def email(request):
         ])
 
 
-    try:
-        server = smtplib.SMTP(settings.SMTP_HOST_AND_PORT)
-        server.starttls()
-        server.login(settings.SMTP_USERNAME,settings.SMTP_PASSWORD)
-        server.sendmail(settings.FROM_EMAIL, settings.TO_EMAIL, BODY)
-        server.quit()
-    except:
-        return HttpResponse(status=400)
+    #try:
+        #server = smtplib.SMTP(settings.SMTP_HOST_AND_PORT)
+        #server.starttls()
+        #server.login(settings.SMTP_USERNAME,settings.SMTP_PASSWORD)
+        #server.sendmail(settings.FROM_EMAIL, settings.TO_EMAIL, BODY)
+        #server.quit()
+    #except:
+        #return HttpResponse(status=400)
     return HttpResponse(status=200)
 
 def thanks(request):
