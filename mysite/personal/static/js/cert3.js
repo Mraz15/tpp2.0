@@ -893,9 +893,9 @@ $.ajaxSetup({
 
 
 $('#submit').click(function(){
-	if (orderDocNum.length > 1){
+	if (orderDocNum.length > 0){
 		var counter2 = 0;
-		json_data = []
+		var json_data = []
 		json_data.push({
 			first_Name: $('#firstName').val(),
 			last_Name: $('#last_name').val(),
@@ -921,27 +921,14 @@ $('#submit').click(function(){
 			})
 
 		}
-		
-		$.post( "/email",  JSON.stringify(json_data), 
-		function(xml, textStatus, xhr){
-			if(xhr.status === 200){
-				alert("Successfully Submitted!");
-				window.location.replace("/thanks?order=" + JSON.stringify(json_data));
-			} else{
-				alert("Submission Failed, Please Submit again!");
-			}
-		});
+		window.location.replace("/thanks?order=" + JSON.stringify(json_data));
+		// $.post( "/thanks?order=" + JSON.stringify(json_data), 
+		// function(xml, textStatus, xhr){
+		// 		alert("Continuing to Review Order Page!");
+		// 		window.location.replace("
+		// 	});
 	} else {
-		var json_data = { "docNum": orderDocNum[0], "docType" : orderDocType[0]}
-		$.post( "/email",  JSON.stringify(json_data), 
-		function(xml, textStatus, xhr){
-			if(xhr.status === 200){
-				alert("Successfully Submitted!");
-				window.location.replace("/thanks?order=" + JSON.stringify(json_data));
-			} else{
-				alert("Submission Failed, Please Submit again!");
-			}
-		});
+		alert("You don't have any items in your cart!");
 	}
 });
 

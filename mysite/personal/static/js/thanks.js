@@ -47,7 +47,7 @@ $('#submit').click(function(){
 		function(xml, textStatus, xhr){
 			if(xhr.status === 200){
 				alert("Successfully Submitted!");
-				window.location.replace("/thanks?order=" + JSON.stringify(json_data));
+				// window.location.replace("/thanks?order=" + JSON.stringify(json_data));
 			} else{
 				alert("Submission Failed, Please Submit again!");
 			}
