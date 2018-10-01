@@ -32,8 +32,9 @@ def email(request):
     docEmail = []
     docCost = []
 
-    if len(json_data) > 1:
-        for i in range(0, len(json_data)):
+
+    for i in range(0, len(json_data)):
+        if i > 0:
             docType1 = json_data[i].get('docType')
             docNum1 = json_data[i].get('docNum')
             docCert1 = json_data[i].get('docCert')

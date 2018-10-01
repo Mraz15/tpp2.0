@@ -483,7 +483,18 @@ function orderSplice(orderNum, docType, docNum, cert, legal, country, media, num
 
 function orderDelete(orderNum){
 
-	delete orderDocType[orderNum];
+	orderDocType.splice(orderNum,1);
+	orderDocNum.splice(orderNum,1);
+	orderCert.splice(orderNum,1);
+	orderLegal.splice(orderNum,1);
+	orderCountry.splice(orderNum,1);
+	orderNumOfCopies.splice(orderNum,1);
+	orderMedia.splice(orderNum,1);
+	orderForward.splice(orderNum,1);
+	orderEmailCopy.splice(orderNum,1);
+	orderCost.splice(orderNum,1);
+
+	/*delete orderDocType[orderNum];
 	delete orderDocNum[orderNum];
 	delete orderCert[orderNum];
 	delete orderLegal[orderNum];
@@ -492,7 +503,7 @@ function orderDelete(orderNum){
 	delete orderMedia[orderNum];
 	delete orderForward[orderNum];
 	delete orderEmailCopy[orderNum];
-	delete orderCost[orderNum];
+	delete orderCost[orderNum];*/
 }
 
 function testFun(){
@@ -893,9 +904,9 @@ $.ajaxSetup({
 
 
 $('#submit').click(function(){
-	if (orderDocNum.length > 1){
-		var counter2 = 0;
-		json_data = []
+	/*if (orderDocNum.length > 1){*/
+		var counter2 = 0,
+		json_data = [];
 		json_data.push({
 			first_Name: $('#firstName').val(),
 			last_Name: $('#last_name').val(),
@@ -931,7 +942,7 @@ $('#submit').click(function(){
 				alert("Submission Failed, Please Submit again!");
 			}
 		});
-	} else {
+	/*} else {
 		var json_data = { "docNum": orderDocNum[0], "docType" : orderDocType[0]}
 		$.post( "/email",  JSON.stringify(json_data), 
 		function(xml, textStatus, xhr){
@@ -942,7 +953,7 @@ $('#submit').click(function(){
 				alert("Submission Failed, Please Submit again!");
 			}
 		});
-	}
+	}*/
 });
 
 

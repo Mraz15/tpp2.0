@@ -14,6 +14,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
 <head>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'js/jquery.validate.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/thanks.js' %}"></script>
 </head>
 
@@ -122,9 +123,29 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 </div>
 <div>
         <a role="button" href="/uspto_docs" class="btn btn-primary col-lg-2 col-lg-offset-3 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
-        id='edit'>Edit Order</a>
+        id='edit' onclick="history.back(-1)">Edit Order</a>
     <a role="button" class="btn btn-primary col-lg-2 col-lg-offset-2 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
         id='submit'>Submit Order</a>
+</div>
+
+<div>
+    <input id="listLength" value="{{ order|length}}"/>
+    {% for item in order %}
+    {% if forloop.counter >= 2 %}
+    <form id="orderForm">
+        <input type="text" class="1" value="{{item.docType}}"/>
+        <input type="text" class="docNum" value="{{item.docNum}}"/>
+        <input type="text" class="docCert" value="{{item.docCert}}"/>
+        <input type="text" class="docLegal" value="{{item.docLegal}}"/>
+        <input type="text" class="docCountry" value="{{item.docCountry}}"/>
+        <input type="text" class="docNumofCopies" value="{{item.docNumofCopies}}"/>
+        <input type="text" class="docMedia" value="{{item.docMedia}}"/>
+        <input type="text" class="docForward" value="{{item.docForward}}"/>
+        <input type="text" class="docEmail" value="{{item.docEmail}}"/>
+    </form>
+    {% endif %}
+    {% endfor %}
+
 </div>
 
 
