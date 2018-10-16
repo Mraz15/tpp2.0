@@ -127,5 +127,33 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         id='submit'>Submit Order</a>
 </div>
 
+<div>
+        <button class="btn btn-primary" id="testBtn" style="display: block">Test</button> 
+        <p id="test">
+        </p>
+          <input name='checkName' type='checkbox' id='checkTest'>
+        </div>        
+
+<div>
+        <input id="listLength" value="{{ order|length}}"/>
+        <form id="orderForm">
+            {% for item in order %}
+            {% if forloop.counter >= 2 %}
+            <input type="text" id="doctype" name="docType{{forloop.counter}}" value="{{item.docType}}"/>
+            <input type="text" name="docNum{{forloop.counter}}" value="{{item.docNum}}"/>
+            <input type="text" name="docCert{{forloop.counter}}" value="{{item.docCert}}"/>
+            <input type="text" name="docLegal{{forloop.counter}}" value="{{item.docLegal}}"/>
+            <input type="text" name="docCountry{{forloop.counter}}" value="{{item.docCountry}}"/>
+            <input type="text" name="docNumofCopies{{forloop.counter}}" value="{{item.docNumofCopies}}"/>
+            <input type="text" name="docMedia{{forloop.counter}}" value="{{item.docMedia}}"/>
+            <input type="text" name="docForward{{forloop.counter}}" value="{{item.docForward}}"/>
+            <input type="text" name="docEmail{{forloop.counter}}" value="{{item.docEmail}}"/>
+            <input type="text" name="docCost{{forloop.counter}}" value="{{item.docCost}}"/>
+        {% endif %}
+        {% endfor %}
+        </form>
+    
+    </div>
+
 
 {% endblock %}

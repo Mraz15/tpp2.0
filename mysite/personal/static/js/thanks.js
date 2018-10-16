@@ -36,12 +36,35 @@ $.ajaxSetup({
 	}
 });
 
+$('#testBtn').click(function(){
+    var formData = $('#orderForm').serializeArray();
+    $("#test").html(formData.length);
+});
+
 $('#submit').click(function(){
-    $.getJSON( "thanks?", function( data ) {
+    var formData = $('#orderForm').serializeArray();
+    var json_data = {}
+
+    jQuery.each(formData, function() {
+        json_data[this.name] = this.value || '';
+    });
+
+
+    // json_data.push({
+    //     'docType': $('#docType').val(),
+    //     // last_Name: $('#last_name').val(),
+    //     // company: $('#company_name').val(),
+    //     // address: $('#address').val(),
+    //     // email: $('#email').val(),
+    //     // ref: $('#ref_num').val()
+    // })
+
+
+    /*$.getJSON( "thanks?", function( data ) {
         var json_data = [];
         $.each( data, function( key, val ) {
-          json_data.push(key + val);
-        });
+          json_data.push({key : val});
+        });*/
 
 		$.post( "/email",  JSON.stringify(json_data), 
 		function(xml, textStatus, xhr){
@@ -64,4 +87,3 @@ $('#submit').click(function(){
 
 
 
-});
