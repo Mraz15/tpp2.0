@@ -49,23 +49,6 @@ $('#submit').click(function(){
         json_data[this.name] = this.value || '';
     });
 
-
-    // json_data.push({
-    //     'docType': $('#docType').val(),
-    //     // last_Name: $('#last_name').val(),
-    //     // company: $('#company_name').val(),
-    //     // address: $('#address').val(),
-    //     // email: $('#email').val(),
-    //     // ref: $('#ref_num').val()
-    // })
-
-
-    /*$.getJSON( "thanks?", function( data ) {
-        var json_data = [];
-        $.each( data, function( key, val ) {
-          json_data.push({key : val});
-        });*/
-
 		$.post( "/email",  JSON.stringify(json_data), 
 		function(xml, textStatus, xhr){
 			if(xhr.status === 200){
@@ -74,8 +57,8 @@ $('#submit').click(function(){
 			} else{
 				alert("Submission Failed, Please Submit again!");
 			}
-		});
-		});
+        });
+});
 
 
 /*for (i=0; i<length(orderDocNum); i++){

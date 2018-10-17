@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^about$', views.about, name='about'),
     url(r'^email$', views.email, name='email'),
     url(r'^thanks$', views.thanks, name='thanks'),
+    url(r'^clientEmail$', views.clientEmail, name='clientEmail'),
     ]

@@ -119,6 +119,11 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     {% endif %}
     {% endfor %}
 
+<div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
+    <div style="background-color: #245580 !important" class="panel-heading">
+        <h3 style=" color: white !important" class="panel-title text-center">Special Instructions & Shipping Information</h3>
+    </div>
+    <p>{{order.0.instructions}}</p>
 </div>
 <div>
         <a role="button" href="/uspto_docs" class="btn btn-primary col-lg-2 col-lg-offset-3 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
@@ -127,16 +132,17 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         id='submit'>Submit Order</a>
 </div>
 
-<div>
-        <button class="btn btn-primary" id="testBtn" style="display: block">Test</button> 
-        <p id="test">
-        </p>
-          <input name='checkName' type='checkbox' id='checkTest'>
-        </div>        
 
-<div>
+<div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2"></divclass>
         <input id="listLength" value="{{ order|length}}"/>
         <form id="orderForm">
+            <input type="text" name="firstName" value="{{order.0.first_Name}}"/>
+            <input type="text" name="lastName" value="{{order.0.last_Name}}"/>
+            <input type="text" name="company" value="{{order.0.company}}"/>
+            <input type="text" name="address" value="{{order.0.address}}"/>
+            <input type="text" name="email" value="{{order.0.email}}"/>
+            <input type="text" name="ref" value="{{order.0.ref}}"/>
+            <input type="text" name="instructions" value="{{order.0.instructions}}"/>
             {% for item in order %}
             {% if forloop.counter >= 2 %}
             <input type="text" id="doctype" name="docType{{forloop.counter}}" value="{{item.docType}}"/>
@@ -149,8 +155,8 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
             <input type="text" name="docForward{{forloop.counter}}" value="{{item.docForward}}"/>
             <input type="text" name="docEmail{{forloop.counter}}" value="{{item.docEmail}}"/>
             <input type="text" name="docCost{{forloop.counter}}" value="{{item.docCost}}"/>
-        {% endif %}
-        {% endfor %}
+            {% endif %}
+            {% endfor %}
         </form>
     
     </div>

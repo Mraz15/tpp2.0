@@ -19,8 +19,49 @@ def about(request):
 def contact(request):
     return render(request, 'personal/contact.html')
 
+def clientEmail(request):
+    json_data = json.loads(request.body)
+
+    # firstName = json_data['firstName']
+    # lastName = json_data['lastName']
+    # company = json_data['company']
+    # address = json_data['address']
+    email = json_data['email']
+    # ref = json_data['ref']
+
+    SUBJECT = "New Order Submitted"
+
+    text = 'it works'
+
+    BODY = "\r\n".join([
+    "From: %s" % settings.FROM_EMAIL,
+    "To: %s" % email,
+    "Subject: %s" % SUBJECT ,
+    "",
+    text
+    ])
+
+
+    try:
+        server = smtplib.SMTP(settings.SMTP_HOST_AND_PORT)
+        server.starttls()
+        server.login(settings.SMTP_USERNAME,settings.SMTP_PASSWORD)
+        server.sendmail(settings.FROM_EMAIL, settings.TO_EMAIL, BODY)
+        server.quit()
+    except:
+        return HttpResponse(status=400)
+    return HttpResponse(status=200) 
+
+
+
 def email(request):
     json_data = json.loads(request.body)
+    firstName = json_data['firstName']
+    lastName = json_data['lastName']
+    company = json_data['company']
+    address = json_data['address']
+    email = json_data['email']
+    ref = json_data['ref']
     docType = []
     docNum = []
     docCert = []
@@ -72,6 +113,8 @@ def email(request):
 
     text = 'Thank you for your order! \n \n Below is an overview of your order: \n \n'
 
+    orderText = ''
+
     for i in range(0, len(docType)):
         orderLineP = "DOCUMENT " + str(i +1) + ":"
         docTypeP = docType[i]
@@ -86,27 +129,21 @@ def email(request):
         docCostP = docCost[i]
 
         subText = (orderLineP + "\n"
-        +"document Type: " + str(docTypeP) + "\n"
-        +"document Number: " + str(docNumP) +"\n"
-        +"certified: " + str(docCertP) + "\n"
-        +"legalized: " + str(docLegalP) + "\n"
-        +"country (if legalized): " + str(docCountryP) + "\n"
-        +"number of Copies: " + str(docNumofCopiesP) + "\n"
-        +"document Media: " + str(docMediaP) + "\n"
-        +"forward to associate: " + str(docForwardP) + "\n"
+        +"Document Type: " + str(docTypeP) + "\n"
+        +"Document Number: " + str(docNumP) +"\n"
+        +"Certified: " + str(docCertP) + "\n"
+        +"Legalized: " + str(docLegalP) + "\n"
+        +"Country (if legalized): " + str(docCountryP) + "\n"
+        +"Number of Copies: " + str(docNumofCopiesP) + "\n"
+        +"Document Media: " + str(docMediaP) + "\n"
+        +"Forward to associate: " + str(docForwardP) + "\n"
         +"Email a PDF copy: " + str(docEmailP) + "\n"
         +"Cost: " + str(docCostP) + "\n \n")
-        text = text + subText
+        orderText = orderText + subText
         
-    emailFooter = "This is an automated email and we will not respond to replys sent to this email address. \n If you have any questions or concerns please send an email to us at info@thepatentplace.com or call us at 1-703-415-1077. \n \n \n Sincerely,\n Zac Mraz \n Chief Executive Officer\n The Patent Place, Inc."
+    emailFooter = "This is an automated email and we will not respond to replys sent to this email address. \n If you have any questions or concerns please send an email to us at info@thepatentplace.com or call us at 1-703-415-1077. \n \n \n Sincerely,\n Zac Mraz \n Chief Executive Officer\n The Patent Place, Inc.\n 301 Franklin St., 3rd Floor \n Alexandria, VA 22314 \n Tel: 703-415-1077 \n Email: info@thepatentplace.com"
 
-    text = text + emailFooter + str(docType) + str(Jlen)
-
-    #text = ('Document Number: ' + str(docNum) + " ,\n"
-    #+  'Type: ' + str(docType) + " ,\n" 
-    #+ 'Certified: ' +  str(cert) + " ,\n" 
-    #+  'Legalized: ' + str(legal) + " ,\n" 
-    #+  'Total Cost: ' + str(cost))
+    text = text + orderText + emailFooter + str(docType) + str(Jlen)
 
     BODY = "\r\n".join([
         "From: %s" % settings.FROM_EMAIL,
@@ -116,12 +153,36 @@ def email(request):
         text
         ])
 
+    clientText = ('Hi ' + firstName + ',' "\n \n"
+    + 'Thank you for your order! We have recieved the details of your request and are currently processing your order.' "\n\n"
+    + 'Below is summary of your order, if you see any errors or have any concerns please email us at info@thepatentplace.com. Please do not reply to this email, it was computer generated and we do not check this email account.' +'\n\n\n'
+    )
+
+    clientInfo = ('Your Contact Information: \n'
+    + 'First Name: ' + firstName + '\n'
+    + 'last Name: ' + lastName + '\n'
+    + 'Email: ' + email + '\n'
+    + 'Company: ' + company + '\n'
+    + 'Address: ' + address + '\n'
+    + 'Billing Reference: ' + ref + '\n\n')
+
+    clientMessage= clientText + clientInfo + orderText + emailFooter
+
+    clientBody = "\r\n".join([
+    "From: %s" % settings.FROM_EMAIL,
+    "To: %s" % email,
+    "Subject: %s" % SUBJECT ,
+    "",
+    clientMessage
+    ])
+
 
     try:
         server = smtplib.SMTP(settings.SMTP_HOST_AND_PORT)
         server.starttls()
         server.login(settings.SMTP_USERNAME,settings.SMTP_PASSWORD)
         server.sendmail(settings.FROM_EMAIL, settings.TO_EMAIL, BODY)
+        server.sendmail(settings.FROM_EMAIL, email, clientBody)
         server.quit()
     except:
         return HttpResponse(status=400)

@@ -238,7 +238,8 @@ var tot = {
 	orderMedia = [],
 	orderForward = [],
 	orderEmailCopy = [],
-	orderCost = [];
+	orderCost = [],
+	ForwardingAddress = [];
 
 
 function calculator(docType, cert, numOfCopies, PDFCopy){
@@ -449,11 +450,15 @@ function formReset(){
 	$('#copyOpt').css('display', 'none');
 	$('#copiesYes').prop('checked', false);
 	$('#copiesNo').prop('checked', false);
+	$('#fillAddress').css('display', 'none');
+	$('#fillAddress').prop('checked',false);
+	$('#FAaddress').css('display','none');
+	$('#FAAdd').val('');
 
 
 }
 
-function orderArrayPush(docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost){
+function orderArrayPush(docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost, forAddress){
 
 	orderDocType.push(docType);
 	orderDocNum.push(docNum);
@@ -465,9 +470,10 @@ function orderArrayPush(docType, docNum, cert, legal, country, media, numOfCopie
 	orderForward.push(forward);
 	orderEmailCopy.push(emailCopy);
 	orderCost.push(cost);
+	ForwardingAddress.push(forAddress);
 }
 
-function orderSplice(orderNum, docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost){
+function orderSplice(orderNum, docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost, forAddress){
 
 	orderDocType.splice(orderNum,1,docType);
 	orderDocNum.splice(orderNum,1,docNum);
@@ -479,6 +485,7 @@ function orderSplice(orderNum, docType, docNum, cert, legal, country, media, num
 	orderForward.splice(orderNum,1,forward);
 	orderEmailCopy.splice(orderNum,1,emailCopy);
 	orderCost.splice(orderNum,1,cost);
+	ForwardingAddress.splice(orderNum,1,forAddress);
 }
 
 function orderDelete(orderNum){
@@ -605,6 +612,22 @@ $('#FAOpt').change(function(){
 	} else if (FAOpt == 'No'){
 		$('#FAaddress').css('display','none');
 	}
+
+	if(FAOpt =='Yes' & orderForward.length >= 1){
+		$('#fillAddress').css('display','block');
+
+	} else {
+		$('#fillAddress').css('display','none');
+	}
+
+});
+
+$('#fillAddress').change(function(){
+	if($('#forAddress').is(':checked')){
+		$('#FAAdd').val(ForwardingAddress[0]);
+	} else if ($('#forAddress').is(':unchecked')) {
+		$('#FAAdd').val('');
+	}
 });
 
 
@@ -671,7 +694,8 @@ $('#addDoc').click(function(){
 		forward = $('#FAOpt').val(),
 		count = (tot.count - 1),
 		emailCopy = ($('input[name=radioName]:checked', '#emailCopies').val()),
-		cost = calculator(docType, cert, numOfCopies, emailCopy);
+		cost = calculator(docType, cert, numOfCopies, emailCopy),
+		forAddress = $('#FAAdd').val();
 
 	docNumEnter(docType);
 	
@@ -701,7 +725,7 @@ $('#addDoc').click(function(){
 		$('#numOfCopies').css('border-color','red');
 	} else {
 
-	orderArrayPush(docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost);	
+	orderArrayPush(docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost, forAddress);	
 	
 	var table = "<table id='table"+tot.count+"' class='form-group table table-bordered text-center'><tr><th rowspan='5' class='text-center'>Document "+tot.count+"<br><br> <button  type='button' id='"+tot.count+"' name='"+tot.count+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name="+tot.count+" type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th>Doc #</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(count)]+"</td><td>"+orderDocNum[(count)]+"</td><td>"+orderCert[(count)]+"</td><td>"+orderLegal[(count)]+"</td><td>"+orderCountry[(count)]+"</td></tr><tr class='active text-center'><th>Media</th><th># copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th></tr><tr class='text-center'><td>"+orderMedia[(count)]+"</td><td>"+orderNumOfCopies[(count)]+"</td><td>"+orderForward[(count)]+"</td><td>"+orderEmailCopy[(count)]+"</td><td>"+orderCost[(count)]+"</td></tr></table>";
 
@@ -743,6 +767,8 @@ function submitForms(){
 	document.getElementById("finalForm").submit();
 }
 
+
+
 $("#clientInfoForm").validate({
 	rules: {
 		firstName: "required",
@@ -775,61 +801,61 @@ $('#cart').on('click', '.delete', function(){
 
 });
 
-$('#save').click(function(){
-	var 
-		docType = $('#docType').val(),
-		cert = ($('input[name=radioName]:checked', '#certForm').val()),
-		legal = ($('input[name=radioName]:checked', '#legalForm').val()),
-		country = $('#countries').val(),
-		numOfCopies = $('#numOfCopies').val(),
-		medium = $('#medium').val(),
-		//ref = ($('input[name=optradio]:checked', '#FHNPLs').val()),
-		forward = $('#FAOpt').val(),
-		emailCopy = ($('input[name=radioName]:checked', '#emailCopies').val()),
-		cost = calculator(docType, cert, numOfCopies, emailCopy);
+// $('#save').click(function(){
+// 	var 
+// 		docType = $('#docType').val(),
+// 		cert = ($('input[name=radioName]:checked', '#certForm').val()),
+// 		legal = ($('input[name=radioName]:checked', '#legalForm').val()),
+// 		country = $('#countries').val(),
+// 		numOfCopies = $('#numOfCopies').val(),
+// 		medium = $('#medium').val(),
+// 		//ref = ($('input[name=optradio]:checked', '#FHNPLs').val()),
+// 		forward = $('#FAOpt').val(),
+// 		emailCopy = ($('input[name=radioName]:checked', '#emailCopies').val()),
+// 		cost = calculator(docType, cert, numOfCopies, emailCopy);
 
-		docNumEnter(docType);
+// 		docNumEnter(docType);
 
-		if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked')) && ($('#forRef').prop('checked'))){
-			docType = "FH + all refs";
-		} else if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked'))){
-			docType = "FH/NPLs/US";
-		} else if (($('#NPLs').prop('checked')) && ($('#forRef').prop('checked'))){
-			docType = "FH/NPLs/For";
-		} else if (($('#forRef').prop('checked')) && ($('#USRef').prop('checked'))){
-			docType = "FH/US/For";
-		} else if ($('#NPLs').prop('checked')){
-			docType = "FH/NPLs";
-		} else if ($('#USRef').prop('checked')){
-			docType = "FH/US";
-		} else if ($('#forRef').prop('checked')){
-			docType = "FH/For";
-		}
+// 		if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked')) && ($('#forRef').prop('checked'))){
+// 			docType = "FH + all refs";
+// 		} else if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked'))){
+// 			docType = "FH/NPLs/US";
+// 		} else if (($('#NPLs').prop('checked')) && ($('#forRef').prop('checked'))){
+// 			docType = "FH/NPLs/For";
+// 		} else if (($('#forRef').prop('checked')) && ($('#USRef').prop('checked'))){
+// 			docType = "FH/US/For";
+// 		} else if ($('#NPLs').prop('checked')){
+// 			docType = "FH/NPLs";
+// 		} else if ($('#USRef').prop('checked')){
+// 			docType = "FH/US";
+// 		} else if ($('#forRef').prop('checked')){
+// 			docType = "FH/For";
+// 		}
 
-		orderSplice(orderArray.number, docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost)
+// 		orderSplice(orderArray.number, docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost)
 
-		var table = "<table id='table"+Number(orderArray.number+1)+"' class='table table-bordered text-center'><tr><th rowspan='5' class='text-center'>Document "+Number(orderArray.number+1)+"<br><br> <button  type='button' id='"+Number(orderArray.number+1)+"' name='"+Number(orderArray.number+1)+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name='"+Number(orderArray.number+1)+"' id='deleteBtn' type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th>Doc #</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(orderArray.number)]+"</td><td>"+orderDocNum[(orderArray.number)]+"</td><td>"+orderCert[(orderArray.number)]+"</td><td>"+orderLegal[(orderArray.number)]+"</td><td>"+orderCountry[(orderArray.number)]+"</td></tr><tr class='active text-center'><th>Media</th><th># copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th></tr><tr class='text-center'><td>"+orderMedia[(orderArray.number)]+"</td><td>"+orderNumOfCopies[(orderArray.number)]+"</td><td>"+orderForward[(orderArray.number)]+"</td><td>"+orderEmailCopy[(orderArray.number)]+"</td><td>"+orderCost[(orderArray.number)]+"</td></tr></table>";
+// 		var table = "<table id='table"+Number(orderArray.number+1)+"' class='table table-bordered text-center'><tr><th rowspan='5' class='text-center'>Document "+Number(orderArray.number+1)+"<br><br> <button  type='button' id='"+Number(orderArray.number+1)+"' name='"+Number(orderArray.number+1)+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name='"+Number(orderArray.number+1)+"' id='deleteBtn' type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th>Doc #</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(orderArray.number)]+"</td><td>"+orderDocNum[(orderArray.number)]+"</td><td>"+orderCert[(orderArray.number)]+"</td><td>"+orderLegal[(orderArray.number)]+"</td><td>"+orderCountry[(orderArray.number)]+"</td></tr><tr class='active text-center'><th>Media</th><th># copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th></tr><tr class='text-center'><td>"+orderMedia[(orderArray.number)]+"</td><td>"+orderNumOfCopies[(orderArray.number)]+"</td><td>"+orderForward[(orderArray.number)]+"</td><td>"+orderEmailCopy[(orderArray.number)]+"</td><td>"+orderCost[(orderArray.number)]+"</td></tr></table>";
 
 
-		$('#cart').append(table);
-		$('#cart').css('display','table');
-		formReset();
+// 		$('#cart').append(table);
+// 		$('#cart').css('display','table');
+// 		formReset();
 
-	$('#submitOrder').css('display','block');
-	$('#anotherDoc').css('display','block');
-	$('#documentLine').css('display', 'none');
-	$('#docCart').css('display','block');
-	});
+// 	$('#submitOrder').css('display','block');
+// 	$('#anotherDoc').css('display','block');
+// 	$('#documentLine').css('display', 'none');
+// 	$('#docCart').css('display','block');
+// 	});
 
-$('#anotherDoc').click(function(){
-$('#documentLine').css('display', 'block');
-$('#addDoc').css('display', 'block');
-$('#save').css('display', 'none');
-$('#docHeader').text('Document ' + tot.count);
-$('#anotherDoc').css('display','none');
-$('#submitOrder').css('display','none');
+// $('#anotherDoc').click(function(){
+// $('#documentLine').css('display', 'block');
+// $('#addDoc').css('display', 'block');
+// $('#save').css('display', 'none');
+// $('#docHeader').text('Document ' + tot.count);
+// $('#anotherDoc').css('display','none');
+// $('#submitOrder').css('display','none');
 
-});
+// });
 
 
 function getCookie(name) {
@@ -868,30 +894,6 @@ $.ajaxSetup({
 });
 
 
-/*$('#submit').click(function(){
-	// var json_data = { "docNum": docNum, "docType" : doc.docType,"cert" : cert.val, "legal" : legal.val, "docMed" : medium, "copies": numOfCopies, "cost" : cost.innerText  }
-	var json_data = { "docNum": docNum, "docType" : doc.docType,"cert" : cert.val, "legal" : legal.val, "cost" : cost.innerText  }
-	$.post( "/email",  JSON.stringify(json_data), 
-	function(){
-		alert("Successfully Submitted!");
-		window.location.replace("/");
-    	});
-	});*/
-
-/*$('#submit').click(function(){
-	var json_data = { "docNum": orderDocNum[0], "docType" : doc.docType,"cert" : cert.val, "legal" : legal.val }
-	$.post( "/email",  JSON.stringify(json_data), 
-	function(xml, textStatus, xhr){
-		if(xhr.status === 200){
-			alert("Successfully Submitted!");
-			window.location.replace("/thanks?order=" + JSON.stringify(json_data));
-		} else{
-			alert("Submission Failed, Please Submit again!");
-		}
-	});
-});*/
-
-
 $('#submit').click(function(){
 	if (orderDocNum.length > 0){
 		var counter2 = 0;
@@ -902,7 +904,8 @@ $('#submit').click(function(){
 			company: $('#company_name').val(),
 			address: $('#address').val(),
 			email: $('#email').val(),
-			ref: $('#ref_num').val()
+			ref: $('#ref_num').val(),
+			instructions: $('#specialInstructions').val()
 		})
 		for (var i=0; i<orderDocNum.length; i++){
 			counter2 ++
