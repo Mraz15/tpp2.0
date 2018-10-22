@@ -229,6 +229,203 @@ var tot = {
 		"ZMB": "call",
 		"ZWE": "call"
 	},
+	countryTimes = {
+        "AFG": 7,
+        "ALB": 0,
+        "DZA": 6,
+        "AND": 0,
+        "AGO": 6,
+        "ATG": 0,
+        "ARG": 0,
+        "ARM": 0,
+        "AUS": 0,
+        "AUT": 0,
+        "AZE": 0,
+        "BHS": 0,
+        "BHR": 0,
+        "BGD": 3,
+        "BRB": 0,
+        "BLR": 0,
+        "BEL": 0,
+        "BLZ": 0,
+        "BEN": 5,
+        "BTN": "call",
+        "BOL": 5,
+        "BWA": 0,
+        "BRA": 0,
+        "BRN": 0,
+        "BGR": 0,
+        "BFA": "call",
+        "BDI": 0,
+        "KHM": "call",
+        "CMR": "call",
+        "CAN": "call",
+        "CAF": "call",
+        "TCD": "call",
+        "CHL": 0,
+        "CHN": 10,
+        "COL": 0,
+        "COM": "call",
+        "COG": "call",
+        "COK": 0,
+        "CRI": 0,
+        "CIV": 10,
+        "HRV": 0,
+        "CUB": "call",
+        "CYP": 0,
+        "CZE": 0,
+        "DNK": 0,
+        "DJI": "call",
+        "DMA": 0,
+        "DOM": 0,
+        "ECU": 0,
+        "EGY": 6,
+        "SLV": 0,
+        "GNQ": "call",
+        "ERI": "call",
+        "EST": 0,
+        "ETH": 7,
+        "FJI": 0,
+        "FIN": 0,
+        "FRA": 0,
+        "GAB": "call",
+        "GMB": 7,
+        "GCC": 3,
+        "GEO": 0,
+        "DEU": 0,
+        "GHA": "call",
+        "GRC": 0,
+        "GRD": 0,
+        "GTM": 14,
+        "GIN": "call",
+        "GNB": "call",
+        "GUY": "call",
+        "HTI": 7,
+        "HND": 0,
+        "HKG": 0,
+        "HUN": 0,
+        "ISL": 0,
+        "IND": 0,
+        "IDN": 12,
+        "IRN": 10,
+        "IRQ": 7,
+        "IRL": 0,
+        "ISR": 0,
+        "ITA": 0,
+        "JAM": "call",
+        "JPN": 0,
+        "JOR": 5,
+        "KAZ": 0,
+        "KEN": 7,
+        "KIR": "call",
+        "KWT": 5,
+        "KGZ": 0,
+        "LAO": "call",
+        "LVA": 0,
+        "LBN": 50,
+        "LSO": 0,
+        "LBR": 0,
+        "LBY": 8,
+        "LIE": 0,
+        "LTU": 0,
+        "LUX": 0,
+        "MAC": 0,
+        "MKD": 0,
+        "MDG": 5,
+        "MWI": 0,
+        "MYS": 5,
+        "MDV": "call",
+        "MLI": 10,
+        "MLT": 0,
+        "MHL": 0,
+        "MRT": "call",
+        "MUS": 0,
+        "MEX": 0,
+        "FSM": "call",
+        "MDA": 0,
+        "MCO": 0,
+        "MNG": 0,
+        "MNE": 0,
+        "MAR": 0,
+        "MOZ": "call",
+        "MMR": 7,
+        "NAM": 0,
+        "NRU": "call",
+        "NPL": "call",
+        "NLD": 0,
+        "NZL": 0,
+        "NIC": 0,
+        "NER": "call",
+        "NGA": 10,
+        "NIU": 0,
+        "NOR": 0,
+        "OMN": 0,
+        "PAK": 10,
+        "PSE": 14,
+        "PAN": 0,
+        "PNG": "call",
+        "PRY": 0,
+        "PER": 0,
+        "PHL": 14,
+        "POL": 0,
+        "PRT": 0,
+        "QAT": 14,
+        "ROU": 0,
+        "RUS": 0,
+        "RWA": 14,
+        "KNA": 0,
+        "LCA": 0,
+        "VCT": 0,
+        "WSM": 0,
+        "SMR": 0,
+        "STP": 0,
+        "SAU": 3,
+        "SEN": "call",
+        "SRB": 0,
+        "SYC": 0,
+        "SLE": 5,
+        "SGP": 2,
+        "SVK": 0,
+        "SVN": 0,
+        "SLB": "call",
+        "SOM": "call",
+        "ZAF": 0,
+        "KOR": "call",
+        "SSD": 3,
+        "ESP": 0,
+        "LKA": 5,
+        "SDN": 6,
+        "SUR": 0,
+        "SWZ": 0,
+        "SWE": 0,
+        "CHE": 0,
+        "SYR": 11,
+        "TJK": "call",
+        "TZA": "call",
+        "THA": 4,
+        "TLS": 4,
+        "TGO": "call",
+        "TON": 0,
+        "TTO": 0,
+        "TUN": 3,
+        "TUR": 0,
+        "TKM": "call",
+        "TUV": "call",
+        "UGA": "call",
+        "UKR": 0,
+        "ARE": 3,
+        "GBR": 0,
+        "URY": 0,
+        "UZB": 0,
+        "VUT": 0,
+        "VEN": 0,
+        "VNM": 4,
+        "YEM": 4,
+        "ZMB": "call",
+        "ZWE": "call"
+	},
+	StateDeptTime = 4,
+    usptoTime = 10,
 	orderDocType = [],
 	orderDocNum = [],
 	orderCert = [],
@@ -239,6 +436,7 @@ var tot = {
 	orderForward = [],
 	orderEmailCopy = [],
 	orderCost = [],
+	orderTime = [],
 	ForwardingAddress = [];
 
 
@@ -298,6 +496,50 @@ function calculator(docType, cert, numOfCopies, PDFCopy){
 		return "$" + (ourFees[docType] + (numOfCopies * 5)) + ".00";
 	} else { 
 		return "Call for Price";
+	}
+	}
+
+}
+
+function timeEst(docType, cert){
+	var country = document.getElementById('countries').value,
+		steps = 0;
+
+	if (countryFees[country] > 0) {
+        steps = 2;
+    } else if (countryFees[country] === 0) {
+        steps = 1;
+    } else if (countryFees[country] === "call") {
+        steps = "call"; 
+	}
+
+	if (country != 'No') {
+		if (steps == 1){
+			return usptoTime + StateDeptTime + 1 + " Bus. Days";
+		} else if (steps > 1) {
+			return usptoTime + StateDeptTime + 1 + countryTimes[country] + " Bus. Days";
+		
+		}
+	} else {
+
+	if (docType == "app" && cert == "Yes"){
+		return usptoTime + " Bus. Days";
+	} else if (docType == "app" && cert == "No"){
+		return "1-2 Bus. Days";
+	} else if (docType == "FH" && cert == "Yes"){
+		return "10-25 Bus. Days";
+	} else if (docType == "FH" && cert == "No"){
+		return "1-2 Bus. Days";
+	} else if (docType == "pat" && cert == "Yes"){
+		return usptoTime + " Bus. Days";
+	} else if (docType == "pat" && cert == "No"){
+		return "1 Bus. Day";
+	} else if (docType == "ass" && cert == "Yes"){
+		return usptoTime + " Bus. Days";
+	} else if (docType == "ass" && cert == "No"){
+		return "1 Bus. Day";
+	} else { 
+		return "Call for Time Estimate";
 	}
 	}
 
@@ -458,7 +700,7 @@ function formReset(){
 
 }
 
-function orderArrayPush(docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost, forAddress){
+function orderArrayPush(docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost, forAddress, time){
 
 	orderDocType.push(docType);
 	orderDocNum.push(docNum);
@@ -470,10 +712,11 @@ function orderArrayPush(docType, docNum, cert, legal, country, media, numOfCopie
 	orderForward.push(forward);
 	orderEmailCopy.push(emailCopy);
 	orderCost.push(cost);
+	orderTime.push(time);
 	ForwardingAddress.push(forAddress);
 }
 
-function orderSplice(orderNum, docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost, forAddress){
+function orderSplice(orderNum, docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost, forAddress, time){
 
 	orderDocType.splice(orderNum,1,docType);
 	orderDocNum.splice(orderNum,1,docNum);
@@ -485,6 +728,7 @@ function orderSplice(orderNum, docType, docNum, cert, legal, country, media, num
 	orderForward.splice(orderNum,1,forward);
 	orderEmailCopy.splice(orderNum,1,emailCopy);
 	orderCost.splice(orderNum,1,cost);
+	orderTime.splice(orderNum,1,time);
 	ForwardingAddress.splice(orderNum,1,forAddress);
 }
 
@@ -500,6 +744,8 @@ function orderDelete(orderNum){
 	delete orderForward[orderNum];
 	delete orderEmailCopy[orderNum];
 	delete orderCost[orderNum];
+	delete orderTime[orderNum];
+	delete ForwardingAddress[orderNum];
 }
 
 function testFun(){
@@ -513,7 +759,11 @@ function populateForm(number){
 		docType = orderDocType[number],
 		medium = orderMedia[number],
 		numOfCopies = orderNumOfCopies[number],
-		countries = orderCountry[number];
+		countries = orderCountry[number],
+		forward = orderForward[number],
+		forAddress = ForwardingAddress[number],
+		PDFCopy = orderEmailCopy[number];
+
 
 		if (docType == "FH + all refs"){
 			docType = 'FH';
@@ -558,6 +808,8 @@ function populateForm(number){
 		$("#medium").val(medium);
 		$("#numOfCopies").val(numOfCopies);
 		$("#countries").val(countries);
+		$("#FAOpt").val(forward);
+
 		
 		
 		docNumTypes(docType);
@@ -589,6 +841,21 @@ function populateForm(number){
 			$("#legalYes").prop("checked", true);
 			$("#legalNo").prop("checked", false);
 		}
+
+		if (PDFCopy == 'Yes'){
+			$("#copiesYes").prop("checked", true);
+			$("#copiesNo").prop("checked", false);
+		} else if (PDFCopy == 'No'){
+			$("#copiesNo").prop("checked", true);
+			$("#copiesYes").prop("checked", false);
+		};
+
+		if (forward == 'Yes'){
+			$('#FAaddress').css('display','block');
+			$('#FAAdd').val(forAddress);
+		} else if (forward == 'No'){
+			$('#FAaddress').css('display','none');
+		};
 		
 		$('#save').css('display', 'block');
 		$('#addDoc').css('display', 'none');
@@ -695,6 +962,7 @@ $('#addDoc').click(function(){
 		count = (tot.count - 1),
 		emailCopy = ($('input[name=radioName]:checked', '#emailCopies').val()),
 		cost = calculator(docType, cert, numOfCopies, emailCopy),
+		time = timeEst(docType, cert),
 		forAddress = $('#FAAdd').val();
 
 	docNumEnter(docType);
@@ -725,9 +993,9 @@ $('#addDoc').click(function(){
 		$('#numOfCopies').css('border-color','red');
 	} else {
 
-	orderArrayPush(docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost, forAddress);	
+	orderArrayPush(docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost, forAddress, time);	
 	
-	var table = "<table id='table"+tot.count+"' class='form-group table table-bordered text-center'><tr><th rowspan='5' class='text-center'>Document "+tot.count+"<br><br> <button  type='button' id='"+tot.count+"' name='"+tot.count+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name="+tot.count+" type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th>Doc #</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(count)]+"</td><td>"+orderDocNum[(count)]+"</td><td>"+orderCert[(count)]+"</td><td>"+orderLegal[(count)]+"</td><td>"+orderCountry[(count)]+"</td></tr><tr class='active text-center'><th>Media</th><th># copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th></tr><tr class='text-center'><td>"+orderMedia[(count)]+"</td><td>"+orderNumOfCopies[(count)]+"</td><td>"+orderForward[(count)]+"</td><td>"+orderEmailCopy[(count)]+"</td><td>"+orderCost[(count)]+"</td></tr></table>";
+	var table = "<table id='table"+tot.count+"' class='form-group table table-bordered text-center'><tr><th rowspan='6' class='text-center'>Document "+tot.count+"<br><br> <button  type='button' id='"+tot.count+"' name='"+tot.count+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name="+tot.count+" type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th colspan='2'>Doc Number</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(count)]+"</td><td colspan='2'>"+orderDocNum[(count)]+"</td><td>"+orderCert[(count)]+"</td><td>"+orderLegal[(count)]+"</td><td>"+orderCountry[(count)]+"</td></tr><tr class='active text-center'><th>Media</th><th>Copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th><th>Time</th></tr><tr class='text-center'><td>"+orderMedia[(count)]+"</td><td>"+orderNumOfCopies[(count)]+"</td><td>"+orderForward[(count)]+"</td><td>"+orderEmailCopy[(count)]+"</td><td>"+orderCost[(count)]+"</td><td>"+orderTime[(count)]+"</td></tr></table>";
 
 	$('#cart').append(table);
 	$('#cart').css('display','table');
@@ -767,18 +1035,22 @@ function submitForms(){
 	document.getElementById("finalForm").submit();
 }
 
+$('#clientInforForm').submit(function(e){
+	e.preventDefault();
+})
 
 
-$("#clientInfoForm").validate({
-	rules: {
-		firstName: "required",
-		last_name: "required"
-	},
-	messages: {
-		firstName: "Please enter your first name",
-		last_name: "Please enter your last name"
-	}
-});
+
+$("#clientInfoForm").validate();
+// 	rules: {
+// 		firstName: "required",
+// 		last_name: "required"
+// 	},
+// 	messages: {
+// 		firstName: "Please enter your first name",
+// 		last_name: "Please enter your last name"
+// 	}
+// });
 
 
 $('#cart').on('click', '.edit', function(){
@@ -801,61 +1073,64 @@ $('#cart').on('click', '.delete', function(){
 
 });
 
-// $('#save').click(function(){
-// 	var 
-// 		docType = $('#docType').val(),
-// 		cert = ($('input[name=radioName]:checked', '#certForm').val()),
-// 		legal = ($('input[name=radioName]:checked', '#legalForm').val()),
-// 		country = $('#countries').val(),
-// 		numOfCopies = $('#numOfCopies').val(),
-// 		medium = $('#medium').val(),
-// 		//ref = ($('input[name=optradio]:checked', '#FHNPLs').val()),
-// 		forward = $('#FAOpt').val(),
-// 		emailCopy = ($('input[name=radioName]:checked', '#emailCopies').val()),
-// 		cost = calculator(docType, cert, numOfCopies, emailCopy);
+$('#save').click(function(){
+	var 
+		docType = $('#docType').val(),
+		cert = ($('input[name=radioName]:checked', '#certForm').val()),
+		legal = ($('input[name=radioName]:checked', '#legalForm').val()),
+		country = $('#countries').val(),
+		numOfCopies = $('#numOfCopies').val(),
+		medium = $('#medium').val(),
+		//ref = ($('input[name=optradio]:checked', '#FHNPLs').val()),
+		forward = $('#FAOpt').val(),
+		emailCopy = ($('input[name=radioName]:checked', '#emailCopies').val()),
+		cost = calculator(docType, cert, numOfCopies, emailCopy),
+		time = timeEst(docType, cert),
+		forAddress = $('#FAAdd').val();
 
-// 		docNumEnter(docType);
+		docNumEnter(docType);
 
-// 		if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked')) && ($('#forRef').prop('checked'))){
-// 			docType = "FH + all refs";
-// 		} else if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked'))){
-// 			docType = "FH/NPLs/US";
-// 		} else if (($('#NPLs').prop('checked')) && ($('#forRef').prop('checked'))){
-// 			docType = "FH/NPLs/For";
-// 		} else if (($('#forRef').prop('checked')) && ($('#USRef').prop('checked'))){
-// 			docType = "FH/US/For";
-// 		} else if ($('#NPLs').prop('checked')){
-// 			docType = "FH/NPLs";
-// 		} else if ($('#USRef').prop('checked')){
-// 			docType = "FH/US";
-// 		} else if ($('#forRef').prop('checked')){
-// 			docType = "FH/For";
-// 		}
+		if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked')) && ($('#forRef').prop('checked'))){
+			docType = "FH + all refs";
+		} else if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked'))){
+			docType = "FH/NPLs/US";
+		} else if (($('#NPLs').prop('checked')) && ($('#forRef').prop('checked'))){
+			docType = "FH/NPLs/For";
+		} else if (($('#forRef').prop('checked')) && ($('#USRef').prop('checked'))){
+			docType = "FH/US/For";
+		} else if ($('#NPLs').prop('checked')){
+			docType = "FH/NPLs";
+		} else if ($('#USRef').prop('checked')){
+			docType = "FH/US";
+		} else if ($('#forRef').prop('checked')){
+			docType = "FH/For";
+		}
 
-// 		orderSplice(orderArray.number, docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost)
+		orderSplice(orderArray.number, docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost, forAddress, time)
 
-// 		var table = "<table id='table"+Number(orderArray.number+1)+"' class='table table-bordered text-center'><tr><th rowspan='5' class='text-center'>Document "+Number(orderArray.number+1)+"<br><br> <button  type='button' id='"+Number(orderArray.number+1)+"' name='"+Number(orderArray.number+1)+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name='"+Number(orderArray.number+1)+"' id='deleteBtn' type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th>Doc #</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(orderArray.number)]+"</td><td>"+orderDocNum[(orderArray.number)]+"</td><td>"+orderCert[(orderArray.number)]+"</td><td>"+orderLegal[(orderArray.number)]+"</td><td>"+orderCountry[(orderArray.number)]+"</td></tr><tr class='active text-center'><th>Media</th><th># copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th></tr><tr class='text-center'><td>"+orderMedia[(orderArray.number)]+"</td><td>"+orderNumOfCopies[(orderArray.number)]+"</td><td>"+orderForward[(orderArray.number)]+"</td><td>"+orderEmailCopy[(orderArray.number)]+"</td><td>"+orderCost[(orderArray.number)]+"</td></tr></table>";
+		// var table = "<table id='table"+Number(orderArray.number+1)+"' class='table table-bordered text-center'><tr><th rowspan='5' class='text-center'>Document "+Number(orderArray.number+1)+"<br><br> <button  type='button' id='"+Number(orderArray.number+1)+"' name='"+Number(orderArray.number+1)+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name='"+Number(orderArray.number+1)+"' id='deleteBtn' type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th>Doc #</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(orderArray.number)]+"</td><td>"+orderDocNum[(orderArray.number)]+"</td><td>"+orderCert[(orderArray.number)]+"</td><td>"+orderLegal[(orderArray.number)]+"</td><td>"+orderCountry[(orderArray.number)]+"</td></tr><tr class='active text-center'><th>Media</th><th># copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th></tr><tr class='text-center'><td>"+orderMedia[(orderArray.number)]+"</td><td>"+orderNumOfCopies[(orderArray.number)]+"</td><td>"+orderForward[(orderArray.number)]+"</td><td>"+orderEmailCopy[(orderArray.number)]+"</td><td>"+orderCost[(orderArray.number)]+"</td></tr></table>";
+        var table = "<table id='table"+Number(orderArray.number+1)+"' class='table table-bordered text-center'><tr><th rowspan='6' class='text-center'>Document "+Number(orderArray.number+1)+"<br><br> <button  type='button' id='"+Number(orderArray.number+1)+"' name='"+Number(orderArray.number+1)+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name='"+Number(orderArray.number+1)+"' id='deleteBtn' type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th colspan='2'>Doc Number</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(orderArray.number)]+"</td><td colspan='2'>"+orderDocNum[(orderArray.number)]+"</td><td>"+orderCert[(orderArray.number)]+"</td><td>"+orderLegal[(orderArray.number)]+"</td><td>"+orderCountry[(orderArray.number)]+"</td></tr><tr class='active text-center'><th>Media</th><th>Copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th><th>Time</th></tr><tr class='text-center'><td>"+orderMedia[(orderArray.number)]+"</td><td>"+orderNumOfCopies[(orderArray.number)]+"</td><td>"+orderForward[(orderArray.number)]+"</td><td>"+orderEmailCopy[(orderArray.number)]+"</td><td>"+orderCost[(orderArray.number)]+"</td><td>"+orderTime[(orderArray.number)]+"</td></tr></table>";
 
 
-// 		$('#cart').append(table);
-// 		$('#cart').css('display','table');
-// 		formReset();
+		$('#cart').append(table);
+		$('#cart').css('display','table');
+		formReset();
 
-// 	$('#submitOrder').css('display','block');
-// 	$('#anotherDoc').css('display','block');
-// 	$('#documentLine').css('display', 'none');
-// 	$('#docCart').css('display','block');
-// 	});
+	$('#submitOrder').css('display','block');
+	$('#anotherDoc').css('display','block');
+	$('#documentLine').css('display', 'none');
+	$('#docCart').css('display','block');
+	});
 
-// $('#anotherDoc').click(function(){
-// $('#documentLine').css('display', 'block');
-// $('#addDoc').css('display', 'block');
-// $('#save').css('display', 'none');
-// $('#docHeader').text('Document ' + tot.count);
-// $('#anotherDoc').css('display','none');
-// $('#submitOrder').css('display','none');
+$('#anotherDoc').click(function(){
+$('#documentLine').css('display', 'block');
+$('#addDoc').css('display', 'block');
+$('#save').css('display', 'none');
+$('#docHeader').text('Document ' + tot.count);
+$('#anotherDoc').css('display','none');
+$('#submitOrder').css('display','none');
 
-// });
+});
 
 
 function getCookie(name) {
@@ -895,6 +1170,13 @@ $.ajaxSetup({
 
 
 $('#submit').click(function(){
+	$('#clientInforForm').submit(function(e){
+		e.preventDefault();
+		$("#clientInfoForm").validate();
+	})
+
+
+
 	if (orderDocNum.length > 0){
 		var counter2 = 0;
 		var json_data = []
@@ -905,7 +1187,7 @@ $('#submit').click(function(){
 			address: $('#address').val(),
 			email: $('#email').val(),
 			ref: $('#ref_num').val(),
-			instructions: $('#specialInstructions').val()
+			instructions: $('#specialInstructions').val(),
 		})
 		for (var i=0; i<orderDocNum.length; i++){
 			counter2 ++
@@ -920,7 +1202,9 @@ $('#submit').click(function(){
 				docMedia: orderMedia[i],
 				docForward: orderForward[i],
 				docEmail: orderEmailCopy[i],
-				docCost: orderCost[i]
+				docCost: orderCost[i],
+				shipInfo: ForwardingAddress[i],
+				docTime: orderTime[i]
 			})
 
 		}

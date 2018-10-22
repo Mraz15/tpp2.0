@@ -112,18 +112,53 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                 <td>Cost</td>
                 <td>{{ item.docCost }}</td>
             </tr>
+            <tr>
+                <td>Time</td>
+                <td>{{ item.docTime }}</td>
+            </tr>
         </table>
         <hr>
     </div>
 
     {% endif %}
     {% endfor %}
-
+</div>
 <div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
     <div style="background-color: #245580 !important" class="panel-heading">
         <h3 style=" color: white !important" class="panel-title text-center">Special Instructions & Shipping Information</h3>
     </div>
-    <p>{{order.0.instructions}}</p>
+    <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
+        <table class="table">
+            <thead>
+                <th class="text-center">
+                    Special Instructions
+                </th>
+            </thead>
+            <tr>
+                {% if order.0.instructions %}
+                <td>{{order.0.instructions}}</td>
+                {% else %}
+                <td>No insturctions or comments were made</td>
+                {% endif %}
+            </tr>
+        </table>
+    </div>
+    <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
+            <table class="table">
+                <thead>
+                    <th class="text-center">
+                        Shipping Information
+                    </th>
+                </thead>
+                <tr>
+                    {% if order.1.docForward == 'Yes' %}
+                    <td>{{order.1.shipInfo}}</td>
+                    {% else %}
+                    <td>{{order.0.address}}</td>
+                    {% endif %}
+                </tr>
+            </table>
+        </div>
 </div>
 <div>
         <a role="button" href="/uspto_docs" class="btn btn-primary col-lg-2 col-lg-offset-3 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
@@ -133,7 +168,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 </div>
 
 
-<div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2"></divclass>
+<div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
         <input id="listLength" value="{{ order|length}}"/>
         <form id="orderForm">
             <input type="text" name="firstName" value="{{order.0.first_Name}}"/>
@@ -155,11 +190,15 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
             <input type="text" name="docForward{{forloop.counter}}" value="{{item.docForward}}"/>
             <input type="text" name="docEmail{{forloop.counter}}" value="{{item.docEmail}}"/>
             <input type="text" name="docCost{{forloop.counter}}" value="{{item.docCost}}"/>
+            <input type="text" name="docTime{{forloop.counter}}" value="{{item.docTime}}"/>
             {% endif %}
             {% endfor %}
+            <a role="button" class="btn btn-primary col-lg-2 col-lg-offset-2 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
+            id='submit'>Submit Order</a>
+            <div class="g-recaptcha text-center" data-sitekey="6Ld9jlEUAAAAAIxIA9qbfa-xcA2AL5QyFn5yxfYg"></div>
         </form>
     
     </div>
 
-
+<script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}

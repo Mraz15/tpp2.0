@@ -72,11 +72,9 @@ def email(request):
     docForward = []
     docEmail = []
     docCost = []
-    Jlen = len(json_data)
+    docTime = []
 
-    docType1 = json_data['docType2']
-
-    for i in range(1, 1 + len(json_data)/10):
+    for i in range(1, 1 + len(json_data)/11):
         docTypeNumber = 'docType' + str(i+1)
         docNumNumber = 'docNum' + str(i+1)
         docCertNumber = 'docCert' + str(i+1)
@@ -87,6 +85,7 @@ def email(request):
         docForwardNumber = 'docForward' + str(i+1)
         docEmailNumber = 'docEmail' + str(i+1)
         docCostNumber = 'docCost' + str(i+1)
+        docTimeNumber = 'docTime' + str(i+1)
 
         docType1 = json_data[docTypeNumber]
         docNum1 = json_data[docNumNumber]
@@ -98,6 +97,7 @@ def email(request):
         docForward1 = json_data[docForwardNumber]
         docEmail1 = json_data[docEmailNumber]
         docCost1 = json_data[docCostNumber]
+        docTime1 = json_data[docTimeNumber]
         docType.append(docType1)
         docNum.append(docNum1)
         docCert.append(docCert1)
@@ -108,6 +108,7 @@ def email(request):
         docForward.append(docForward1)
         docEmail.append(docEmail1)
         docCost.append(docCost1)
+        docTime.append(docTime1)
 
     SUBJECT = "New Order Submitted"
 
@@ -127,6 +128,7 @@ def email(request):
         docForwardP = docForward[i]
         docEmailP = docEmail[i]
         docCostP = docCost[i]
+        docTimeP = docTime[i]
 
         subText = (orderLineP + "\n"
         +"Document Type: " + str(docTypeP) + "\n"
@@ -138,12 +140,13 @@ def email(request):
         +"Document Media: " + str(docMediaP) + "\n"
         +"Forward to associate: " + str(docForwardP) + "\n"
         +"Email a PDF copy: " + str(docEmailP) + "\n"
-        +"Cost: " + str(docCostP) + "\n \n")
+        +"Cost: " + str(docCostP) + "\n"
+        +"Time: " + str(docTimeP)+ "\n \n")
         orderText = orderText + subText
         
     emailFooter = "This is an automated email and we will not respond to replys sent to this email address. \n If you have any questions or concerns please send an email to us at info@thepatentplace.com or call us at 1-703-415-1077. \n \n \n Sincerely,\n Zac Mraz \n Chief Executive Officer\n The Patent Place, Inc.\n 301 Franklin St., 3rd Floor \n Alexandria, VA 22314 \n Tel: 703-415-1077 \n Email: info@thepatentplace.com"
 
-    text = text + orderText + emailFooter + str(docType) + str(Jlen)
+    text = text + orderText + emailFooter
 
     BODY = "\r\n".join([
         "From: %s" % settings.FROM_EMAIL,
