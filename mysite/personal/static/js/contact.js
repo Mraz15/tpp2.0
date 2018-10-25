@@ -37,23 +37,35 @@ $.ajaxSetup({
 });
 
 $('#testBtn').click(function(){
-    var formData = $('#orderForm').serializeArray();
+    var formData = $('#contactForm').serializeArray();
     $("#test").html(formData.length);
 });
 
 $('#submit').click(function(){
-    var formData = $('#orderForm').serializeArray();
-    var json_data = {}
-
-    jQuery.each(formData, function() {
-        json_data[this.name] = this.value || '';
+    var firstName = $('#first_name').val();
+    var lastName = $('#last_name').val();
+    var company = $('#company').val();
+    var email = $('#email').val();
+    var question = $('#question').val();
+    // var formData = $('#orderForm').serializeArray();
+    var json_data = []
+    json_data.push({
+        'firstName': firstName,
+        'lastName': lastName,
+        'company': company,
+        'email': email,
+        'question': question
+    
     });
 
-		$.post( "/email",  JSON.stringify(json_data), 
+    // jQuery.each(formData, function() {
+    //     json_data[this.name] = this.value || '';
+    // });
+
+		$.post( "/contactEmail",  JSON.stringify(json_data), 
 		function(xml, textStatus, xhr){
 			if(xhr.status === 200){
 				alert("Successfully Submitted!");
-				window.location.replace("/confirmation");
 			} else{
 				alert("Submission Failed, Please Submit again!");
 			}
@@ -61,12 +73,6 @@ $('#submit').click(function(){
 });
 
 
-/*for (i=0; i<length(orderDocNum); i++){
-	var json_data = {"docNum": orderDocNum[i], "docType": orderDocType[i]}
-}*/
-
-
 });
-
 
 
