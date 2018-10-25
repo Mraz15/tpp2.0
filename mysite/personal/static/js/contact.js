@@ -41,37 +41,85 @@ $('#testBtn').click(function(){
     $("#test").html(formData.length);
 });
 
-$('#submit').click(function(){
-    var firstName = $('#first_name').val();
-    var lastName = $('#last_name').val();
-    var company = $('#company').val();
-    var email = $('#email').val();
-    var question = $('#question').val();
-    // var formData = $('#orderForm').serializeArray();
-    var json_data = []
-    json_data.push({
-        'firstName': firstName,
-        'lastName': lastName,
-        'company': company,
-        'email': email,
-        'question': question
-    
-    });
+    // $('#submit').click(function(){
 
-    // jQuery.each(formData, function() {
-    //     json_data[this.name] = this.value || '';
+    //     var firstName = $('#first_name').val();
+    //     var lastName = $('#last_name').val();
+    //     var company = $('#company').val();
+    //     var email = $('#email').val();
+    //     var question = $('#question').val();
+
+    //     var json_data = []
+    //     json_data.push({
+    //         'firstName': firstName,
+    //         'lastName': lastName,
+    //         'company': company,
+    //         'email': email,
+    //         'question': question
+        
+    //     });
+
+
+
+    //         $.post( "/contactEmail",  JSON.stringify(json_data), 
+    //         function(xml, textStatus, xhr){
+    //             if(xhr.status === 200){
+    //                 alert("Successfully Submitted!");
+    //             } else{
+    //                 alert("Submission Failed, Please Submit again!");
+    //             }
+    //         });
     // });
+    // };
 
-		$.post( "/contactEmail",  JSON.stringify(json_data), 
-		function(xml, textStatus, xhr){
-			if(xhr.status === 200){
-				alert("Successfully Submitted!");
-			} else{
-				alert("Submission Failed, Please Submit again!");
-			}
-        });
+$("#contactForm").validate({
+    rules:{
+        first_name: {
+            required: true,
+            minlength: 2
+        },
+        last_name: {
+            required: true,
+            minlength: 2            
+        },
+        email: 'required',
+        question: {
+            required: true,
+            minlength: 2
+        }
+    },
+    messages: {
+        first_name: "Please enter your first name",
+        last_name: "Please enter your last name",
+        email: "Please enter a valid email address",
+        question: "Please enter your question or comment"
+    },
+    submitHandler: function(form){
+            var firstName = $('#first_name').val();
+            var lastName = $('#last_name').val();
+            var company = $('#company').val();
+            var email = $('#email').val();
+            var question = $('#question').val();
+            var json_data = []
+            json_data.push({
+                'firstName': firstName,
+                'lastName': lastName,
+                'company': company,
+                'email': email,
+                'question': question
+            });
+                $.post( "/contactEmail",  JSON.stringify(json_data), 
+                function(xml, textStatus, xhr){
+                    if(xhr.status === 200){
+                        alert("Successfully Submitted!");
+                    } else{
+                        alert("Submission Failed, Please Submit again!");
+                    }
+                });
+        $(form).submit;
+    }
+
 });
-
 
 });
 
