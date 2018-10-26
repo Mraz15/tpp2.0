@@ -456,7 +456,7 @@ function calculator(docType, cert, numOfCopies, PDFCopy){
 		if (steps == 1){
 			return "$" + Math.round((((ourFees.legal) + (certFees[docType]) + 35 + ((stateDept * 0.18)+stateDept)) * numOfCopies) +stateCour) + ".00";
 		} else if (steps > 1) {
-			if(PDFCopy =='No') {
+			if(PDFCopy =='No' || "N/A") {
 			return "$" + Math.round(((((((ourFees.legal*2)+ ((stateDept * 0.18)+stateDept))) + (certFees[docType]) + 35 + ((countryFees[country] * 0.18)+countryFees[country]))) * numOfCopies) +stateCour + countryCour) + ".00";
 			}
 			else if(PDFCopy =='Yes') {
@@ -467,7 +467,7 @@ function calculator(docType, cert, numOfCopies, PDFCopy){
 	} else {
 
 	if (docType == "app" && cert == "Yes"){
-		if(PDFCopy == 'No'){
+		if(PDFCopy == 'No' || "N/A"){
 			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 25 + 10)) + ".00";
 		} else if (PDFCopy =='Yes'){
 			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 25 + 10) + ourFees.Forward) + ".00";
@@ -479,7 +479,7 @@ function calculator(docType, cert, numOfCopies, PDFCopy){
 	} else if (docType == "FH" && cert == "No"){
 		return "$1/pg";
 	} else if (docType == "pat" && cert == "Yes"){
-		if(PDFCopy == 'No'){
+		if(PDFCopy == 'No' || "N/A"){
 			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 25 + 10)) + ".00";
 		} else if (PDFCopy =='Yes'){
 			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 25 + 10) + ourFees.Forward) + ".00";
@@ -487,7 +487,7 @@ function calculator(docType, cert, numOfCopies, PDFCopy){
 	} else if (docType == "pat" && cert == "No"){
 		return "$" + (numOfCopies * ourFees[docType]) + ".00";
 	} else if (docType == "ass" && cert == "Yes"){
-		if(PDFCopy == 'No'){
+		if(PDFCopy == 'No' || "N/A"){
 			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 25 + 10)) + ".00";
 		} else if (PDFCopy =='Yes'){
 			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 25 + 10) + ourFees.Forward) + ".00";
@@ -639,7 +639,7 @@ function certOptions(cert){
 function legalOptions(legal){
 	if (legal == 'Yes'){ 
 	$("#certYes").prop("checked", true);
-	$("#certNo").prop("checked", false); 
+	$("#certNo").prop("checked", false);
 	}
 }
 
@@ -880,8 +880,10 @@ $('#FAOpt').change(function(){
 		$('#FAaddress').css('display','none');
 	}
 
-	if(FAOpt =='Yes' & orderForward.length >= 1){
+	if((FAOpt =='Yes') && (ForwardingAddress.length >= 1) && (ForwardingAddress[0] != null)){
+
 		$('#fillAddress').css('display','block');
+
 
 	} else {
 		$('#fillAddress').css('display','none');
@@ -898,11 +900,11 @@ $('#fillAddress').change(function(){
 });
 
 
-$('#certForm input').on('change', function() {
-   cert.val = ($('input[name=radioName]:checked', '#certForm').val()); 
+$('#docTypeForm input[name=certRadio]').on('change', function() {
+   cert.val = ($('input[name=certRadio]:checked', '#docTypeForm').val()); 
+   legal.val = ($('input[name=legalRadio]:checked', '#docTypeForm').val());
    doc.docType = $('#docType').val();
-   docNumTypes(doc.docType);
-   certOptions(cert.val);
+
 
 
    	if ((doc.docType == 'FH' && cert.val == 'No')){
@@ -911,15 +913,18 @@ $('#certForm input').on('change', function() {
 		$('#FHNPLs').css('display','none');
 	}
 
+	docNumTypes(doc.docType);
+	certOptions(cert.val);
+
 });
 
-$('#legalForm input').on('change', function() {
-	legal.val = ($('input[name=radioName]:checked', '#legalForm').val()); 
-	legalOptions(legal.val);
- });
+// $('#docTypeForm input').on('change', function() {
+// 	legal.val = ($('input[name=legalRadio]:checked', '#docTypeForm').val()); 
+// 	legalOptions(legal.val);
+//  });
 
-$('#legalForm input').on('change', function() {
-   legal.val = ($('input[name=radioName]:checked', '#legalForm').val());
+$('#docTypeForm input[name=legalRadio]').on('change', function() {
+   legal.val = ($('input[name=legalRadio]:checked', '#docTypeForm').val());
 
    if (legal.val == 'Yes') {
    	$('#countries').css('display', 'block');
@@ -930,6 +935,7 @@ $('#legalForm input').on('change', function() {
    	$('#medium').prop('selectedIndex',0);
    	$("#medium").prop("disabled", false);
    }
+   legalOptions(legal.val);
 });
 
 $('#medium').change(function(){
@@ -951,8 +957,8 @@ $('#testBtn').click(function(){
 $('#addDoc').click(function(){
 	var 
 		docType = $('#docType').val(),
-		cert = ($('input[name=radioName]:checked', '#certForm').val()),
-		legal = ($('input[name=radioName]:checked', '#legalForm').val()),
+		cert = ($('input[name=certRadio]:checked', '#docTypeForm').val()),
+		legal = ($('input[name=legalRadio]:checked', '#docTypeForm').val()),
 		country = $('#countries').val(),
 		numOfCopies = $('#numOfCopies').val(),
 		medium = $('#medium').val(),
@@ -960,13 +966,16 @@ $('#addDoc').click(function(){
 		//ref = ($('input[name=optradio]:checked', '#FHNPLs').val()),
 		forward = $('#FAOpt').val(),
 		count = (tot.count - 1),
-		emailCopy = ($('input[name=radioName]:checked', '#emailCopies').val()),
+		emailCopy = ($('input[name=copyRadio]:checked', '#docTypeForm').val()),
 		cost = calculator(docType, cert, numOfCopies, emailCopy),
 		time = timeEst(docType, cert),
 		forAddress = $('#FAAdd').val();
 
 	docNumEnter(docType);
 	
+	if(emailCopy == null){
+		emailCopy = "N/A"
+	}
 	
 	if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked')) && ($('#forRef').prop('checked'))){
 		docType = "FH + all refs";
@@ -1039,18 +1048,6 @@ $('#clientInforForm').submit(function(e){
 	e.preventDefault();
 })
 
-
-
-$("#clientInfoForm").validate();
-// 	rules: {
-// 		firstName: "required",
-// 		last_name: "required"
-// 	},
-// 	messages: {
-// 		firstName: "Please enter your first name",
-// 		last_name: "Please enter your last name"
-// 	}
-// });
 
 
 $('#cart').on('click', '.edit', function(){
@@ -1168,56 +1165,126 @@ $.ajaxSetup({
 	}
 });
 
-
 $('#submit').click(function(){
-	$('#clientInforForm').submit(function(e){
-		e.preventDefault();
-		$("#clientInfoForm").validate();
-	})
-
-
-
-	if (orderDocNum.length > 0){
-		var counter2 = 0;
-		var json_data = []
-		json_data.push({
-			first_Name: $('#firstName').val(),
-			last_Name: $('#last_name').val(),
-			company: $('#company_name').val(),
-			address: $('#address').val(),
-			email: $('#email').val(),
-			ref: $('#ref_num').val(),
-			instructions: $('#specialInstructions').val(),
-		})
-		for (var i=0; i<orderDocNum.length; i++){
-			counter2 ++
-			json_data.push({
-				counter: counter2,
-				docNum: orderDocNum[i],
-				docType: orderDocType[i],
-				docCert: orderCert[i],
-				docLegal: orderLegal[i],
-				docCountry: orderCountry[i],
-				docNumofCopies: orderNumOfCopies[i],
-				docMedia: orderMedia[i],
-				docForward: orderForward[i],
-				docEmail: orderEmailCopy[i],
-				docCost: orderCost[i],
-				shipInfo: ForwardingAddress[i],
-				docTime: orderTime[i]
-			})
-
-		}
-		window.location.replace("/thanks?order=" + JSON.stringify(json_data));
-		// $.post( "/thanks?order=" + JSON.stringify(json_data), 
-		// function(xml, textStatus, xhr){
-		// 		alert("Continuing to Review Order Page!");
-		// 		window.location.replace("
-		// 	});
-	} else {
-		alert("You don't have any items in your cart!");
-	}
+	$('#clientInfoForm').submit();
 });
+
+$('#clientInfoForm').validate({
+    rules:{
+        first_name: {
+            required: true,
+            minlength: 2
+        },
+        last_name: {
+            required: true,
+            minlength: 2            
+        },
+		email: 'required',
+        address: {
+            required: true,
+            minlength: 2            
+        },
+        ref_num: {
+            required: true,
+            minlength: 2
+        }
+    },
+    messages: {
+        firstName: "Please enter your first name",
+        last_name: "Please enter your last name",
+        email: "Please enter a valid email address",
+		address: "Please enter your address",
+		ref_num: "Please enter your reference number, if you do not have one enter \"None\""
+    },
+    submitHandler: function(form){	
+			if (orderDocNum.length > 0){
+				var counter2 = 0;
+				var json_data = []
+				json_data.push({
+					first_Name: $('#first_name').val(),
+					last_Name: $('#last_name').val(),
+					company: $('#company_name').val(),
+					address: $('#address').val(),
+					email: $('#email').val(),
+					ref: $('#ref_num').val(),
+					instructions: $('#specialInstructions').val(),
+				})
+				for (var i=0; i<orderDocNum.length; i++){
+					counter2 ++
+					json_data.push({
+						counter: counter2,
+						docNum: orderDocNum[i],
+						docType: orderDocType[i],
+						docCert: orderCert[i],
+						docLegal: orderLegal[i],
+						docCountry: orderCountry[i],
+						docNumofCopies: orderNumOfCopies[i],
+						docMedia: orderMedia[i],
+						docForward: orderForward[i],
+						docEmail: orderEmailCopy[i],
+						docCost: orderCost[i],
+						shipInfo: ForwardingAddress[i],
+						docTime: orderTime[i]
+					})
+		
+				}
+				window.location.replace("/thanks?order=" + JSON.stringify(json_data));
+				// $.post( "/thanks?order=" + JSON.stringify(json_data), 
+				// function(xml, textStatus, xhr){
+				// 		alert("Continuing to Review Order Page!");
+				// 		window.location.replace("
+				// 	});
+			} else {
+				alert("You don't have any items in your cart!");
+			}
+        $(form).submit;
+    }
+});
+
+// $('#submit').click(function(){
+// 	$('#clientInforForm').submit(function(e){
+// 		e.preventDefault();
+// 		$("#clientInfoForm").validate();
+// 	})
+
+
+
+// 	if (orderDocNum.length > 0){
+// 		var counter2 = 0;
+// 		var json_data = []
+// 		json_data.push({
+// 			first_Name: $('#firstName').val(),
+// 			last_Name: $('#last_name').val(),
+// 			company: $('#company_name').val(),
+// 			address: $('#address').val(),
+// 			email: $('#email').val(),
+// 			ref: $('#ref_num').val(),
+// 			instructions: $('#specialInstructions').val(),
+// 		})
+// 		for (var i=0; i<orderDocNum.length; i++){
+// 			counter2 ++
+// 			json_data.push({
+// 				counter: counter2,
+// 				docNum: orderDocNum[i],
+// 				docType: orderDocType[i],
+// 				docCert: orderCert[i],
+// 				docLegal: orderLegal[i],
+// 				docCountry: orderCountry[i],
+// 				docNumofCopies: orderNumOfCopies[i],
+// 				docMedia: orderMedia[i],
+// 				docForward: orderForward[i],
+// 				docEmail: orderEmailCopy[i],
+// 				docCost: orderCost[i],
+// 				shipInfo: ForwardingAddress[i],
+// 				docTime: orderTime[i]
+// 			})
+
+// 		}
+// 		window.location.replace("/thanks?order=" + JSON.stringify(json_data));
+// 	} else {
+// 		alert("You don't have any items in your cart!");
+// 	}
+// });
 
 
 /*for (i=0; i<length(orderDocNum); i++){

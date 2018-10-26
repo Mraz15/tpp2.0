@@ -5,16 +5,17 @@
 {% load staticfiles %}
 
 {% csrf_token %}
-<script type="text/javascript">
-// using jQuery
-var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-</script>
 
 <head>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="{% static 'js/jquery.validate.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/cert3.js' %}"></script>
 </head>
+<script type="text/javascript">
+  // using jQuery
+  var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+</script>
+  
 
 <div class="container">
          <div style="background-color: #245580 !important" class="jumbotron">
@@ -34,14 +35,14 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
       <h3 style=" color: white !important" class="panel-title text-center">Order Form</h3>
     </div>
     <div class="panel-body">
-      <form name='orderForm' id='clientInfoForm' class="form">
+      <form id='clientInfoForm' class="form">
         <div class="form-group">
-          <label for="firstName" name='firstName'>First Name</label>
-        <input type="text" name='firsName' class="form-control" id="firstName" placeholder="First Name">
+          <label for="firstName">First Name</label>
+          <input type="text" class="form-control" id="first_name" name="first_name"  placeholder="First Name">
         </div>
         <div class="form-group">
           <label for="last_name">Last Name</label>
-          <input type="text" class="form-control" id="last_name" placeholder="Last Name">
+          <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name">
         </div>
         <div class="form-group">
           <label for="company">Company</label>
@@ -49,16 +50,16 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         </div>
         <div class="form-group">
           <label for="address">Address</label>
-          <textarea class="form-control" id="address" rows="3" placeholder="Address"></textarea>
+          <textarea class="form-control" id="address" name="address" rows="3" placeholder="Address"></textarea>
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+          <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email">
           <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
           <label for="ref_num">Reference Number</label>
-          <input type="text" class="form-control" id="ref_num" placeholder="Reference Number">
+          <input type="text" class="form-control" id="ref_num" name="ref_num" placeholder="Reference Number">
         </div>
 
       </form>
@@ -89,40 +90,40 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                     <input type="text" class="form-control" id="FHNum" placeholder="Enter Patent Number (Ex: 0123456) or Application Number (Ex: 01/234567)" style="display: none">
                     <input type="text" class="form-control" id="patNum" placeholder="Enter Patent Number (Ex: 0123456)" style="display: none">
                   </div>
-                </form>
+                <!-- </form> -->
                   <div class="form-group">
                     <div class="form-group text-center col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2">
-                      <form id="certForm">
+                      <!-- <form id="certForm"> -->
                         <div class="form-group" style="display: inline;">
                           <h5>Certified</h5>
                           <label class="radio-inline" id="certYN">
-                            <input type="radio" name="radioName" id="certYes" value="Yes"/>Yes
+                            <input type="radio" name="certRadio" id="certYes" value="Yes"/>Yes
                           </label>
                           <label class="radio-inline">
-                            <input type="radio" name="radioName" id="certNo" value="No"/>No
+                            <input type="radio" name="certRadio" id="certNo" value="No"/>No
                           </label>
                         </div>
-                      </form>
+                      <!-- </form> -->
                     </div>
                     <div class="form-group text-center col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2">
-                      <form id="legalForm" >
+                      <!-- <form id="legalForm" > -->
                         <div class="form-group" style="display: inline;">
                           <fieldset id="legalFieldset">
                           <h5>Legalized</h5>
                           <label class="radio-inline">
-                            <input type="radio" name="radioName" id="legalYes" value="Yes">Yes
+                            <input type="radio" name="legalRadio" id="legalYes" value="Yes">Yes
                           </label>
                           <label class="radio-inline">
-                            <input type="radio" name="radioName" id="legalNo" value="No">No
+                            <input type="radio" name="legalRadio" id="legalNo" value="No">No
                           </label>
                         </fieldset>
                         </div>
-                      </form>
+                      <!-- </form> -->
                     </div>
                   </div>
                   
                   <div class="form-group text-center col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2">
-                    <form id='NPLForm'>
+                    <!-- <form id='NPLForm'> -->
                       <div class="form-group" id="FHNPLs" style="display: none;">
                         <h5>File History Copy Options (select any if needed)</h5>
                         <label class="checkbox-inline">
@@ -135,9 +136,9 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                           <input type="checkbox" name="optradio" id="forRef">Foreign Refs
                         </label>
                       </div>
-                    </form>
+                    <!-- </form> -->
                   </div>
-                  <form id='finalForm'>
+                  <!-- <form id='finalForm'> -->
                     <div class="form-group">
                       <select class="form-control" id="countries" name="countries" onchange="" style="display: none">
                                                 <option value="No">Select Country</option> 
@@ -390,22 +391,23 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                         <label for="address">Foreign Associate's Address</label>
                         <textarea class="form-control"  rows="5" placeholder="Foreign Associate's Address" id='FAAdd'></textarea>
                     </div>
-                  </form>
+                  <!-- </form> -->
                   <div id="copyOpt" class="form-group text-center col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4" style="display: none">
-                      <form id="emailCopies" >
+                      <!-- <form id="emailCopies" > -->
                         <div class="form-group" style="display: inline;">
                           <fieldset id="copiesFieldset">
                           <h5>PDF Confirmation Copy Via Email</h5>
                           <label class="radio-inline">
-                            <input type="radio" name="radioName" id="copiesYes" value="Yes">Yes
+                            <input type="radio" name="copyRadio" id="copiesYes" value="Yes">Yes
                           </label>
                           <label class="radio-inline">
-                            <input type="radio" name="radioName" id="copiesNo" value="No">No
+                            <input type="radio" name="copyRadio" id="copiesNo" value="No">No
                           </label>
                         </fieldset>
                         </div>
-                      </form>
+                      <!-- </form> -->
                     </div>
+                    </form>
               </div>
             </div>
           
