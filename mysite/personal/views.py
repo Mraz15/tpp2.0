@@ -39,6 +39,7 @@ def email(request):
     docEmail = []
     docCost = []
     docTime = []
+    shipInfo = []
 
     if instructions == '':
         instructions = "None given"  
@@ -46,7 +47,7 @@ def email(request):
     #     instructions = "None given"
     
 
-    for i in range(1, 1 + len(json_data)/11):
+    for i in range(1, 1 + len(json_data)/12):
         docTypeNumber = 'docType' + str(i+1)
         docNumNumber = 'docNum' + str(i+1)
         docCertNumber = 'docCert' + str(i+1)
@@ -58,6 +59,7 @@ def email(request):
         docEmailNumber = 'docEmail' + str(i+1)
         docCostNumber = 'docCost' + str(i+1)
         docTimeNumber = 'docTime' + str(i+1)
+        docShipNumber = 'shipInfo' + str(i+1)
 
         docType1 = json_data[docTypeNumber]
         docNum1 = json_data[docNumNumber]
@@ -70,6 +72,7 @@ def email(request):
         docEmail1 = json_data[docEmailNumber]
         docCost1 = json_data[docCostNumber]
         docTime1 = json_data[docTimeNumber]
+        docShip1 = json_data[docShipNumber]
         docType.append(docType1)
         docNum.append(docNum1)
         docCert.append(docCert1)
@@ -81,6 +84,7 @@ def email(request):
         docEmail.append(docEmail1)
         docCost.append(docCost1)
         docTime.append(docTime1)
+        shipInfo.append(docShip1)
 
     SUBJECT = "New Order Submitted"
 
@@ -101,6 +105,7 @@ def email(request):
         docEmailP = docEmail[i]
         docCostP = docCost[i]
         docTimeP = docTime[i]
+        docShipP = shipInfo[i]
 
         subText = (orderLineP + "\n"
         +"Document Type: " + str(docTypeP) + "\n"
@@ -113,7 +118,8 @@ def email(request):
         +"Forward to associate: " + str(docForwardP) + "\n"
         +"Email a PDF copy: " + str(docEmailP) + "\n"
         +"Cost: " + str(docCostP) + "\n"
-        +"Time: " + str(docTimeP)+ "\n \n")
+        +"Time: " + str(docTimeP)+ "\n"
+        +"Ship Info: " + str(docShipP) + "\n\n")
         orderText = orderText + subText
     
     clientInfo = ('Contact Information: \n'

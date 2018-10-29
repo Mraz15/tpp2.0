@@ -437,7 +437,8 @@ var tot = {
 	orderEmailCopy = [],
 	orderCost = [],
 	orderTime = [],
-	ForwardingAddress = [];
+	shippingAddress = [],
+	forwardAdd = [];
 
 
 function calculator(docType, cert, numOfCopies, PDFCopy){
@@ -693,14 +694,14 @@ function formReset(){
 	$('#copiesYes').prop('checked', false);
 	$('#copiesNo').prop('checked', false);
 	$('#fillAddress').css('display', 'none');
-	$('#fillAddress').prop('checked',false);
+	$('#fillAddress').prop('checked', false);
 	$('#FAaddress').css('display','none');
 	$('#FAAdd').val('');
 
 
 }
 
-function orderArrayPush(docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost, forAddress, time){
+function orderArrayPush(docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost, shipAddress, time){
 
 	orderDocType.push(docType);
 	orderDocNum.push(docNum);
@@ -713,10 +714,10 @@ function orderArrayPush(docType, docNum, cert, legal, country, media, numOfCopie
 	orderEmailCopy.push(emailCopy);
 	orderCost.push(cost);
 	orderTime.push(time);
-	ForwardingAddress.push(forAddress);
+	shippingAddress.push(shipAddress);
 }
 
-function orderSplice(orderNum, docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost, forAddress, time){
+function orderSplice(orderNum, docType, docNum, cert, legal, country, media, numOfCopies, forward, emailCopy, cost, shipAddress, time){
 
 	orderDocType.splice(orderNum,1,docType);
 	orderDocNum.splice(orderNum,1,docNum);
@@ -729,7 +730,7 @@ function orderSplice(orderNum, docType, docNum, cert, legal, country, media, num
 	orderEmailCopy.splice(orderNum,1,emailCopy);
 	orderCost.splice(orderNum,1,cost);
 	orderTime.splice(orderNum,1,time);
-	ForwardingAddress.splice(orderNum,1,forAddress);
+	shippingAddress.splice(orderNum,1,shipAddress);
 }
 
 function orderDelete(orderNum){
@@ -745,7 +746,7 @@ function orderDelete(orderNum){
 	delete orderEmailCopy[orderNum];
 	delete orderCost[orderNum];
 	delete orderTime[orderNum];
-	delete ForwardingAddress[orderNum];
+	delete shippingAddress[orderNum];
 }
 
 function testFun(){
@@ -761,7 +762,7 @@ function populateForm(number){
 		numOfCopies = orderNumOfCopies[number],
 		countries = orderCountry[number],
 		forward = orderForward[number],
-		forAddress = ForwardingAddress[number],
+		shipAddress = shippingAddress[number],
 		PDFCopy = orderEmailCopy[number];
 
 
@@ -852,7 +853,7 @@ function populateForm(number){
 
 		if (forward == 'Yes'){
 			$('#FAaddress').css('display','block');
-			$('#FAAdd').val(forAddress);
+			$('#FAAdd').val(shipAddress);
 		} else if (forward == 'No'){
 			$('#FAaddress').css('display','none');
 		};
@@ -880,21 +881,23 @@ $('#FAOpt').change(function(){
 		$('#FAaddress').css('display','none');
 	}
 
-	if((FAOpt =='Yes') && (ForwardingAddress.length >= 1) && (ForwardingAddress[0] != null)){
-
+	if(FAOpt =='Yes' && forwardAdd.length > 0){
 		$('#fillAddress').css('display','block');
-
-
-	} else {
+	}
+	// } else if ((FAOpt =='Yes') && (forwardAdd.length > 2)){
+	// 	$('#test3').html('more than 2');
+	// }
+	else {
 		$('#fillAddress').css('display','none');
 	}
 
 });
 
-$('#fillAddress').change(function(){
-	if($('#forAddress').is(':checked')){
-		$('#FAAdd').val(ForwardingAddress[0]);
-	} else if ($('#forAddress').is(':unchecked')) {
+$('#fillAddress').on('change', '.addAutoFill', function(){
+	if($('input.addAutoFill').is(':checked')){
+		var add = $(this).attr('name')
+		$('#FAAdd').val(shippingAddress[add]);
+	} else if ($('input.addAutoFill').is(':unchecked')) {
 		$('#FAAdd').val('');
 	}
 });
@@ -969,12 +972,33 @@ $('#addDoc').click(function(){
 		emailCopy = ($('input[name=copyRadio]:checked', '#docTypeForm').val()),
 		cost = calculator(docType, cert, numOfCopies, emailCopy),
 		time = timeEst(docType, cert),
+		address = $('#address').val(),
 		forAddress = $('#FAAdd').val();
 
 	docNumEnter(docType);
 	
 	if(emailCopy == null){
 		emailCopy = "N/A"
+	}
+
+	if(medium == 'PDF'){
+		var shipAddress = 'Email'
+	} else if (medium == 'Paper'){
+		if (forward == 'No'){
+			var shipAddress = address;
+		} else if (forward == 'Yes'){
+			var shipAddress = forAddress;
+		}
+	}
+
+	if (forAddress != ''){
+		var forAddCheck = $.inArray(forAddress, forwardAdd);
+		if (forAddCheck == -1){
+			forwardAdd.push(forAddress);
+			var addCount = forwardAdd.length -1;
+			var autofill = "<label class='checkbox-inline'><input type='checkbox' class='addAutoFill' name='"+addCount+"' id='forAddress'>Check if you would like this document also forwarded to: "+forAddress+"</label>"
+			$('#fillAddress').append(autofill)
+		}
 	}
 	
 	if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked')) && ($('#forRef').prop('checked'))){
@@ -1002,7 +1026,7 @@ $('#addDoc').click(function(){
 		$('#numOfCopies').css('border-color','red');
 	} else {
 
-	orderArrayPush(docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost, forAddress, time);	
+	orderArrayPush(docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost, shipAddress, time);	
 	
 	var table = "<table id='table"+tot.count+"' class='form-group table table-bordered text-center'><tr><th rowspan='6' class='text-center'>Document "+tot.count+"<br><br> <button  type='button' id='"+tot.count+"' name='"+tot.count+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name="+tot.count+" type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th colspan='2'>Doc Number</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(count)]+"</td><td colspan='2'>"+orderDocNum[(count)]+"</td><td>"+orderCert[(count)]+"</td><td>"+orderLegal[(count)]+"</td><td>"+orderCountry[(count)]+"</td></tr><tr class='active text-center'><th>Media</th><th>Copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th><th>Time</th></tr><tr class='text-center'><td>"+orderMedia[(count)]+"</td><td>"+orderNumOfCopies[(count)]+"</td><td>"+orderForward[(count)]+"</td><td>"+orderEmailCopy[(count)]+"</td><td>"+orderCost[(count)]+"</td><td>"+orderTime[(count)]+"</td></tr></table>";
 
@@ -1060,6 +1084,7 @@ $('#cart').on('click', '.edit', function(){
 
 });
 
+
 $('#cart').on('click', '.delete', function(){
 	var editLine = $(this).attr('name');
 		orderArray.number = editLine - 1;
@@ -1083,7 +1108,29 @@ $('#save').click(function(){
 		emailCopy = ($('input[name=radioName]:checked', '#emailCopies').val()),
 		cost = calculator(docType, cert, numOfCopies, emailCopy),
 		time = timeEst(docType, cert),
+		address = $('#address').val(),
 		forAddress = $('#FAAdd').val();
+
+		if(emailCopy == null){
+			emailCopy = "N/A"
+		}
+
+		if(medium == 'PDF'){
+			var shipAddress = 'Email'
+		} else if (medium == 'Paper'){
+			if (forward == 'No'){
+				var shipAddress = address;
+			} else if (forward == 'Yes'){
+				var shipAddress = forAddress;
+			}
+		}
+
+		if (forAddress != null){
+			var forAddCheck = $.inArray(forAddress, forwardAdd);
+			if (forAddCheck == -1){
+				forwardAdd.push(forAddress);
+			}
+		}
 
 		docNumEnter(docType);
 
@@ -1103,7 +1150,7 @@ $('#save').click(function(){
 			docType = "FH/For";
 		}
 
-		orderSplice(orderArray.number, docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost, forAddress, time)
+		orderSplice(orderArray.number, docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost, shipAddress, time)
 
 		// var table = "<table id='table"+Number(orderArray.number+1)+"' class='table table-bordered text-center'><tr><th rowspan='5' class='text-center'>Document "+Number(orderArray.number+1)+"<br><br> <button  type='button' id='"+Number(orderArray.number+1)+"' name='"+Number(orderArray.number+1)+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name='"+Number(orderArray.number+1)+"' id='deleteBtn' type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th>Doc #</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(orderArray.number)]+"</td><td>"+orderDocNum[(orderArray.number)]+"</td><td>"+orderCert[(orderArray.number)]+"</td><td>"+orderLegal[(orderArray.number)]+"</td><td>"+orderCountry[(orderArray.number)]+"</td></tr><tr class='active text-center'><th>Media</th><th># copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th></tr><tr class='text-center'><td>"+orderMedia[(orderArray.number)]+"</td><td>"+orderNumOfCopies[(orderArray.number)]+"</td><td>"+orderForward[(orderArray.number)]+"</td><td>"+orderEmailCopy[(orderArray.number)]+"</td><td>"+orderCost[(orderArray.number)]+"</td></tr></table>";
         var table = "<table id='table"+Number(orderArray.number+1)+"' class='table table-bordered text-center'><tr><th rowspan='6' class='text-center'>Document "+Number(orderArray.number+1)+"<br><br> <button  type='button' id='"+Number(orderArray.number+1)+"' name='"+Number(orderArray.number+1)+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name='"+Number(orderArray.number+1)+"' id='deleteBtn' type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th colspan='2'>Doc Number</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(orderArray.number)]+"</td><td colspan='2'>"+orderDocNum[(orderArray.number)]+"</td><td>"+orderCert[(orderArray.number)]+"</td><td>"+orderLegal[(orderArray.number)]+"</td><td>"+orderCountry[(orderArray.number)]+"</td></tr><tr class='active text-center'><th>Media</th><th>Copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th><th>Time</th></tr><tr class='text-center'><td>"+orderMedia[(orderArray.number)]+"</td><td>"+orderNumOfCopies[(orderArray.number)]+"</td><td>"+orderForward[(orderArray.number)]+"</td><td>"+orderEmailCopy[(orderArray.number)]+"</td><td>"+orderCost[(orderArray.number)]+"</td><td>"+orderTime[(orderArray.number)]+"</td></tr></table>";
@@ -1223,7 +1270,7 @@ $('#clientInfoForm').validate({
 						docForward: orderForward[i],
 						docEmail: orderEmailCopy[i],
 						docCost: orderCost[i],
-						shipInfo: ForwardingAddress[i],
+						shipInfo: shippingAddress[i],
 						docTime: orderTime[i]
 					})
 		

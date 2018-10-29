@@ -143,7 +143,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
             </tr>
         </table>
     </div>
-    <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
+    <!-- <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
             <table class="table">
                 <thead>
                     <th class="text-center">
@@ -158,7 +158,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                     {% endif %}
                 </tr>
             </table>
-        </div>
+        </div> -->
 </div>
 <div>
         <a role="button" href="/uspto_docs" class="btn btn-primary col-lg-2 col-lg-offset-3 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
@@ -191,6 +191,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
             <input type="text" name="docEmail{{forloop.counter}}" value="{{item.docEmail}}"/>
             <input type="text" name="docCost{{forloop.counter}}" value="{{item.docCost}}"/>
             <input type="text" name="docTime{{forloop.counter}}" value="{{item.docTime}}"/>
+            <input type="text" name="shipInfo{{forloop.counter}}" value="{{item.shipInfo}}"/>
             {% endif %}
             {% endfor %}
             <a role="button" class="btn btn-primary col-lg-2 col-lg-offset-2 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
