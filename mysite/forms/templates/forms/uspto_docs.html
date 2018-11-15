@@ -433,12 +433,28 @@
             <div class="panel-body">
       <div class='form-group' id='cart'></div>
 
-      <div class="form-group text-center" id="delete" style="display: none">
-              <button  type="button" class="btn btn-danger">Delete Selected</button>
+      <div class="form-group text-center" id="anotherDoc" style="display: none">
+          <button  type="button" class="btn btn-primary">Add Another Document</button>
+        </div>
+
+      <div class="form-group text-center" id="finalEst" style="display: block">
+              <table id="finalEstTable" class="table table-bordered text-center col-lg-12">
+                <tr class='active text-center'>
+                  <th class='text-center'>Total Cost Est.</th>
+                  <th class='text-center'>Discount</th>
+                  <th class='text-center'>Final Cost Est.</th>
+                  <th class='text-center'>Total Time Est.</th>
+                </tr>
+                <tr class='text-center'>
+                  <td id="totalCost"></td>
+                  <td id="discount"></td>
+                  <td id="finalCost"></td>
+                  <td id="totalTime">22 bus. days</td>
+                </tr>
+              </table>
             </div>
-          <div class="form-group text-center" id="anotherDoc" style="display: none">
-              <button  type="button" class="btn btn-primary">Add Another Document</button>
-            </div>
+            <br>
+
             
 
         <div id="instructions" class="form-group" style="display: none">
@@ -490,7 +506,7 @@
         <table class="table table-striped">
           <tr>
             <td> Non-Certified</td>
-            <td> $1.00/page</td>
+            <td> $35.00 + $1.00/page</td>
             <td class="text-right"> 1 Day</td>
           </tr>
           <tr>
@@ -498,6 +514,11 @@
             <td> $75.00</td>
             <td class="text-right"> 7 Days</td>
           </tr>
+          <tr>
+              <td> Additional Non-Certified</td>
+              <td> $1.00/page</td>
+              <td class="text-right"> 1 Day</td>
+            </tr>
           <tr>
             <td> Additional Certified</td>
             <td> $65.00 per</td>
@@ -517,9 +538,14 @@
           </tr>
           <tr>
             <td> Certified</td>
-            <td> $120.00</td>
+            <td> $110.00</td>
             <td class="text-right"> 25 Days</td>
           </tr>
+          <tr>
+              <td> Additional Non-Certified</td>
+              <td> $1.00/page</td>
+              <td class="text-right"> 1 Day</td>
+            </tr>
           <tr>
             <td> Additional Certified</td>
             <td> $100.00 per</td>
@@ -534,7 +560,7 @@
         <table class="table table-striped">
           <tr>
             <td> Non-Certified</td>
-            <td> $60</td>
+            <td> $60.00 + $1.00/page</td>
             <td class="text-right"> 1 Day</td>
           </tr>
           <tr>
@@ -560,18 +586,18 @@
         </div>
         <table class="table table-striped">
           <tr>
-            <td> Non-Certified Patent</td>
+            <td> Non-Certified</td>
             <td> $2.00</td>
             <td class="text-right"> 1 Day</td>
           </tr>
           <tr>
-            <td> Certified Patent</td>
+            <td> Certified</td>
             <td> $75.00</td>
             <td class="text-right"> 7 Days</td>
           </tr>
           <tr>
-            <td> Additional Certified Patent</td>
-            <td> $65.00/patent</td>
+            <td> Additional Certified</td>
+            <td> $65.00 per</td>
             <td class="text-right"> 7 Days</td>
           </tr>
         </table>
