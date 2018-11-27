@@ -456,7 +456,7 @@ var tot = {
 	nonCertDoc = [],
 	PDFTotal = 0;
 
-function discountCalculator(cert, docType, country, PDF, numOfDocs){
+function discountCalculator(cert, docType, country, PDF, numOfDocs, cost){
 	var certCheck = $.inArray('Yes', orderCert),
 		numOfCountryDocs = docsForCountry[country],
 		countryFee = countryFees[country],
@@ -464,35 +464,16 @@ function discountCalculator(cert, docType, country, PDF, numOfDocs){
 		countryCheck = $.inArray(country, orderCountry);
 
 	if (cert == 'Yes'){
-		if (certCheck >= 0){
+		if (countryCheck >= 0){
+			certTotal = Number(certTotal) + Number(numOfDocs);
+		} else {
 			if (numOfDocs > 1){
-				if (countryCheck >= 0){
-				certTotal = certTotal + (numOfDocs);
-				} else {
-					certTotal = certTotal
-				}
-			} else {
-				if (countryCheck >= 0){
-					certTotal = certTotal + 1;
-				} else if (countryCheck == -1){
-					certTotal = certTotal;
-				}
-			}
-		} else if (certCheck < 0){
-			if (numOfDocs > 1){
-				if (countryCheck >= 0){
-				certTotal = certTotal + (numOfDocs - 1);
-				} else {
-					certTotal = certTotal
-				}
-			} else {
-				if (countryCheck >= 0){
-					certTotal = certTotal + 1;
-				} else if (countryCheck == -1){
-					certTotal = certTotal;
-				}
+				certTotal = certTotal + (numOfDocs -1)
+			} else if (numOfDocs == 1){
+				certTotal = certTotal
 			}
 		}
+
 	} else if (cert == 'No'){
 		certTotal = certTotal;
 		if (docType == 'app'){
@@ -544,25 +525,24 @@ function discountCalculator(cert, docType, country, PDF, numOfDocs){
 	if (country != 'No'){
 		if (countryCheck >= 0){
 			if(countryFee ==0){
-				legalTotal = legalTotal +(numOfDocs -1)
+				legalTotal = legalTotal + 1
 				countryTotal = countryTotal
 			} else if (countryFee > 0){
-				legalTotal = legalTotal +(numOfDocs -1)
+				legalTotal = legalTotal + 1
 				countryTotal = countryTotal +1
 			}
 		} else if (countryCheck == -1){
-			if (numOfDocs > 1){
-				if(countryFee ==0){
-					legalTotal = legalTotal +(numOfDocs -1)
-					countryTotal = countryTotal
-				} else if (countryFee > 0){
-					legalTotal = legalTotal +(numOfDocs -1)
-					countryTotal = countryTotal +1
-				}
-			} else {
+			// if (numOfDocs > 1){
+			// 	if(countryFee ==0){
+			// 		legalTotal = legalTotal + 1
+			// 		countryTotal = countryTotal
+			// 	} else if (countryFee > 0){
+			// 		legalTotal = legalTotal + 1
+			// 		countryTotal = countryTotal +1
+			// 	}
+			// } else {
 				legalTotal = legalTotal;
-				countryTimes = countryTotal;
-			}
+				countryTotal = countryTotal;
 		}
 
 
@@ -591,10 +571,16 @@ function discountCalculator(cert, docType, country, PDF, numOfDocs){
 
 	if (numOfCountryDocs >= 3 && numOfCountryDocs <= 6){
 		if (countryFee == 0){
-			legalNumber.Disc = 15 * numOfCountryDocs
+			legalNumber.Disc = legalNumber.Disc + (15 * numOfCountryDocs)
 		} else if (countryFee > 0){
-			legalNumber.Disc = 30 * numOfCountryDocs
+			legalNumber.Disc = legalNumber.Disc + (30 * numOfCountryDocs)
 		}
+	} else if (numOfCountryDocs > 6){
+		if (countryFee == 0){
+			legalNumber.Disc = legalNumber.Disc + (25 * numOfCountryDocs)
+		} else if (countryFee > 0){
+			legalNumber.Disc = legalNumber.Disc + (50 * numOfCountryDocs)
+		}	
 	}
 
 	// if (countryCheck == 2){
@@ -604,7 +590,79 @@ function discountCalculator(cert, docType, country, PDF, numOfDocs){
 
 
 	discount = ((certTotal * 10) + (legalTotal * 55) + (countryTotal * 60) + (PDFTotal * 10) + legalNumber.Disc);
+
+	var appCheck = $.inArray('app', orderDocType);
+	var assCheck = $.inArray('ass', orderDocType);
+
+	if (cert == 'Yes'){
+		var costNumber = cost.replace('$','');
+	// } else if (cert == 'No'){
+	// 	if (docType == 'app'){
+	// 		if (appCheck >= 0){
+	// 			var costNumber = Number(0);
+	// 		} else if (appCheck < 0){
+	// 			var costNumber = 35;
+	// 		}
+	// 	}
+	// 	if (docType == 'FH'){
+	// 		var costNumber = 0;
+	// 	}
+	// 	if (docType == 'ass'){
+	// 		if (assCheck >= 0){
+	// 			var costNumber = 0;
+	// 		} else if (assCheck < 0){
+	// 			var costNumber = 60;
+	// 		}
+	// 	}
+	// 	if (docType == 'pat'){
+	// 		var costNumber = 2;
+	// 	}
+	// 	nonCertDisc(docType);
+	// }
+
+	if (cert == 'No'){
+		nonCertDoc.push(docType);
+	}
+
+	// if (cert == 'No'){
+	// 	nonCertDisc(docType);
+	// }
+
+	totalEst = Number(totalEst) + Number(costNumber);
+
+	// var certCheck = $.inArray('No', orderCert);
+
+	// if (certfCheck > 0){
+	// 	if(cert != 'pat'){
+
+	// 	}
+	// } else if (certCheck == -1){
+
+	// }
+
+	$('#totalCost').html('$'+totalEst+'.00');
+
+	// if (orderDocType.length < 1){
+	// 	docsForCountry[country] = numOfCopies;
+	// } else if (orderDocType.length > 0){
+	// 	if (country in docsForCountry){
+	// 		docsForCountry[country] = Number(docsForCountry[country]) + Number(numOfCopies);
+	// 	} else {
+	// 		docsForCountry[country] = numOfCopies
+	// 	}
+	// }
+
+	if(orderDocType.length > 0 || numOfDocs > 1){
+		$('#discount').html('-$'+discount+'.00');
+	} else{ 
+		$('#discount').html('$0.00');
+	}
+
+	var finalCost = totalEst - discount;
+
+	$('#finalCost').html('$'+finalCost+'.00');
 }
+};
 
 // function nonCertDisc(docType){
 // 	var docTypeCheck = $.inArray(docType, orderDocType);
@@ -672,47 +730,47 @@ function calculator(docType, cert, numOfCopies, PDFCopy){
 	if (country != 'No') {
 		if (steps == 1){
 			if (PDFCopy == 'Yes'){
-			return "$" + Math.round((((ourFees.legal) + (certFees[docType]) + 35 + ((stateDept * 0.18)+stateDept)) * numOfCopies) +stateCour +ourFees.Forward) + ".00";	
+			return "$" + Math.round((((ourFees.legal) + (certFees[docType]) + 35 + ((stateDept * 0.18)+stateDept)) * numOfCopies) +stateCour +ourFees.Forward);	
 			} else if(PDFCopy == 'No' || "N/A") {
-			return "$" + Math.round((((ourFees.legal) + (certFees[docType]) + 35 + ((stateDept * 0.18)+stateDept)) * numOfCopies) +stateCour) + ".00";
+			return "$" + Math.round((((ourFees.legal) + (certFees[docType]) + 35 + ((stateDept * 0.18)+stateDept)) * numOfCopies) +stateCour);
 			}
 		} else if (steps > 1) {
 			if(PDFCopy =='Yes') {
-				return "$" + Math.round(((((((ourFees.legal*2)+ ((stateDept * 0.18)+stateDept))) + (certFees[docType]) + 35 + ((countryFees[country] * 0.18)+countryFees[country]))) * numOfCopies) +stateCour + countryCour + ourFees.Forward) + ".00";
+				return "$" + Math.round(((((((ourFees.legal*2)+ ((stateDept * 0.18)+stateDept))) + (certFees[docType]) + 35 + ((countryFees[country] * 0.18)+countryFees[country]))) * numOfCopies) +stateCour + countryCour + ourFees.Forward);
 			} else if(PDFCopy == 'No' || "N/A") {
-			return "$" + Math.round(((((((ourFees.legal*2)+ ((stateDept * 0.18)+stateDept))) + (certFees[docType]) + 35 + ((countryFees[country] * 0.18)+countryFees[country]))) * numOfCopies) +stateCour + countryCour) + ".00";
+			return "$" + Math.round(((((((ourFees.legal*2)+ ((stateDept * 0.18)+stateDept))) + (certFees[docType]) + 35 + ((countryFees[country] * 0.18)+countryFees[country]))) * numOfCopies) +stateCour + countryCour);
 			}
 		}
 	} else {
 
 	if (docType == "app" && cert == "Yes"){
 		if (PDFCopy =='Yes'){
-			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35) + ourFees.Forward) + ".00";
+			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35) + ourFees.Forward);
 		} else if(PDFCopy == 'No' || "N/A"){
-			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35)) + ".00";
+			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35));
 		} 
 	} else if (docType == "app" && cert == "No"){
 		return "$35.00 + $1/pg";
 	} else if (docType == "FH" && cert == "Yes"){
-		return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 55)) + ".00";
+		return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 55));
 	} else if (docType == "FH" && cert == "No"){
 		return "$1/pg";
 	} else if (docType == "pat" && cert == "Yes"){
 		if (PDFCopy =='Yes'){
-			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35) + ourFees.Forward) + ".00";
+			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35) + ourFees.Forward);
 		} else if(PDFCopy == 'No' || "N/A"){
-			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35)) + ".00";
+			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35));
 		} 
 	} else if (docType == "pat" && cert == "No"){
-		return "$" + (numOfCopies * ourFees[docType]) + ".00";
+		return "$" + (numOfCopies * ourFees[docType]);
 	} else if (docType == "ass" && cert == "Yes"){
 		if (PDFCopy =='Yes'){
-			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35) + ourFees.Forward) + ".00";
+			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35) + ourFees.Forward);
 		} else if(PDFCopy == 'No' || "N/A"){
-			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35)) + ".00";
+			return "$" + ((certFees[docType] * numOfCopies) + (numOfCopies * 35));
 		}
 	} else if (docType == "ass" && cert == "No"){
-		return "$" + (ourFees[docType] + (numOfCopies * 5)) + ".00";
+		return "$" + (ourFees[docType] + (numOfCopies * 5));
 	} else { 
 		return "Call for Price";
 	}
@@ -1204,44 +1262,44 @@ $('#addDoc').click(function(){
 		address = $('#address').val(),
 		forAddress = $('#FAAdd').val();
 
-	var appCheck = $.inArray('app', orderDocType);
-	var assCheck = $.inArray('ass', orderDocType);
+	// var appCheck = $.inArray('app', orderDocType);
+	// var assCheck = $.inArray('ass', orderDocType);
 
-	if (cert == 'Yes'){
-		var costNumber = cost.replace('$','');
-	} else if (cert == 'No'){
-		if (docType == 'app'){
-			if (appCheck >= 0){
-				var costNumber = Number(0);
-			} else if (appCheck < 0){
-				var costNumber = 35;
-			}
-		}
-		if (docType == 'FH'){
-			var costNumber = 0;
-		}
-		if (docType == 'ass'){
-			if (assCheck >= 0){
-				var costNumber = 0;
-			} else if (assCheck < 0){
-				var costNumber = 60;
-			}
-		}
-		if (docType == 'pat'){
-			var costNumber = 2;
-		}
+	// if (cert == 'Yes'){
+	// 	var costNumber = cost.replace('$','');
+	// } else if (cert == 'No'){
+	// 	if (docType == 'app'){
+	// 		if (appCheck >= 0){
+	// 			var costNumber = Number(0);
+	// 		} else if (appCheck < 0){
+	// 			var costNumber = 35;
+	// 		}
+	// 	}
+	// 	if (docType == 'FH'){
+	// 		var costNumber = 0;
+	// 	}
+	// 	if (docType == 'ass'){
+	// 		if (assCheck >= 0){
+	// 			var costNumber = 0;
+	// 		} else if (assCheck < 0){
+	// 			var costNumber = 60;
+	// 		}
+	// 	}
+	// 	if (docType == 'pat'){
+	// 		var costNumber = 2;
+	// 	}
 		// nonCertDisc(docType);
-	}
+	// }
 
-	if (cert == 'No'){
-		nonCertDoc.push(docType);
-	}
+	// if (cert == 'No'){
+	// 	nonCertDoc.push(docType);
+	// }
 
 	// if (cert == 'No'){
 	// 	nonCertDisc(docType);
 	// }
 
-	totalEst = Number(totalEst) + Number(costNumber);
+	// totalEst = Number(totalEst) + Number(costNumber);
 
 	// var certCheck = $.inArray('No', orderCert);
 
@@ -1253,7 +1311,7 @@ $('#addDoc').click(function(){
 
 	// }
 
-	$('#totalCost').html('$'+totalEst+'.00');
+	// $('#totalCost').html('$'+totalEst+'.00');
 
 	if (orderDocType.length < 1){
 		docsForCountry[country] = numOfCopies;
@@ -1265,16 +1323,18 @@ $('#addDoc').click(function(){
 		}
 	}
 
-	if(orderDocType.length > 0 || numOfCopies > 1){
-		discountCalculator(cert, legal, country, emailCopy, numOfCopies)
-		$('#discount').html('-$'+discount+'.00');
-	} else{ 
-		$('#discount').html('$0.00');
-	}
+	discountCalculator(cert, legal, country, emailCopy, numOfCopies, cost)
 
-	var finalCost = totalEst - discount;
+	// if(orderDocType.length > 0 || numOfCopies > 1){
 
-	$('#finalCost').html('$'+finalCost+'.00');
+	// 	$('#discount').html('-$'+discount+'.00');
+	// } else{ 
+	// 	$('#discount').html('$0.00');
+	// }
+
+	// var finalCost = totalEst - discount;
+
+	// $('#finalCost').html('$'+finalCost+'.00');
 
 	docNumEnter(docType);
 	
