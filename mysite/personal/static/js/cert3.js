@@ -437,6 +437,7 @@ var tot = {
 	orderEmailCopy = [],
 	orderCost = [],
 	orderTime = [],
+	orderDisc = [],
 	shippingAddress = [],
 	forwardAdd = [],
 	docsForCountry = [],
@@ -447,6 +448,11 @@ var tot = {
 	nonCertTotal=0,
 	legalTotal = 0,
 	countryTotal = 0,
+	certDis = [],
+	legalDis = [],
+	countryDis = [],
+	ourLegalDis = [],
+	PDFDis = [],
 	legalNumber = {
 		Disc: 0,
 		NCApp: 0,
@@ -461,14 +467,19 @@ function discountCalculator(cert, docType, country, PDF, numOfDocs, cost){
 		numOfCountryDocs = docsForCountry[country],
 		countryFee = countryFees[country],
 		docTypeCheck = $.inArray('docType', nonCertDoc),
-		countryCheck = $.inArray(country, orderCountry);
+		countryCheck = $.inArray(country, orderCountry),
+		prevCert = certTotal,
+		prevLegal = legalTotal,
+		prevCountry = countryTotal,
+		prevPDF = PDFTotal,
+		prevOurLegal = legalNumber.Disc;
 
 	if (cert == 'Yes'){
 		if (countryCheck >= 0){
 			certTotal = Number(certTotal) + Number(numOfDocs);
 		} else {
 			if (numOfDocs > 1){
-				certTotal = certTotal + (numOfDocs -1)
+				certTotal = certTotal + (numOfDocs - 1)
 			} else if (numOfDocs == 1){
 				certTotal = certTotal
 			}
@@ -587,9 +598,26 @@ function discountCalculator(cert, docType, country, PDF, numOfDocs, cost){
 	// 	if 
 	// }
 
+	// var prevDisc = discount;
 
 
 	discount = ((certTotal * 10) + (legalTotal * 55) + (countryTotal * 60) + (PDFTotal * 10) + legalNumber.Disc);
+
+	var lineCertDisc = certTotal - prevCert,
+		lineLegalDisc = legalTotal - prevLegal,
+		lineCountryDisc = countryTotal - prevCountry,
+		linePDFDisc = PDFTotal - prevPDF,
+		lineOurLegalDisc = legalNumber.Disc - prevOurLegal;
+
+	certDis.push(lineCertDisc);
+	legalDis.push(lineLegalDisc);
+	countryDis.push(lineCountryDisc);
+	PDFDis.push(linePDFDisc);
+	ourLegalDis.push(lineOurLegalDisc);
+
+	// var orderDiscount = discount - prevDisc;
+
+	// orderDisc.push(orderDiscount);
 
 	var appCheck = $.inArray('app', orderDocType);
 	var assCheck = $.inArray('ass', orderDocType);
@@ -702,15 +730,56 @@ function editDisc(arrayNumber){
 	cert = orderCert[arrayNumber],
 	legal = orderLegal[arrayNumber],
 	country = orderCountry[arrayNumber],
-	numOfCopies = orderNumOfCopies[arrayNumber];
+	numofDocs = orderNumOfCopies[arrayNumber],
+	cost = orderCost[arrayNumber],
+	certCheck = $.inArray('Yes', orderCert),
+	costNumber = cost.replace('$',''),
+ 
+	certDiscounts = certDis[arrayNumber],
+	legalDiscounts = legalDis[arrayNumber],
+	countryDiscounts = countryDis[arrayNumber],
+	PDFDiscounts = PDFDis[arrayNumber],
+	ourLegalDiscounts = ourLegalDis[arrayNumber];
 
 	if (cert == 'Yes'){
-		certTotal = certTotal - (numOfCopies -1);
+		if (certDiscounts >= 1){
+		certTotal = certTotal - certDiscounts;
+		} else {
+			certTotal = certTotal
+		}
+	}
+	if (legal == 'Yes'){
+		if (legalDiscounts >= 1){
+		legalTotal = legalTotal - legalDiscounts;
+		} else {
+			legalTotal = legalTotal
+		}
+	}
+	if (country == 'Yes'){
+		if (countryDiscounts >= 1){
+		countryTotal = countryTotal - countryDiscounts;
+		} else {
+			countryTotal = countryTotal
+		}
+	}
+	if (PDF == 'Yes'){
+		if (PDFDiscounts >= 1){
+		PDFTotal = PDFTotal - PDFDiscounts;
+		} else {
+			PDFTotal = PDFTotal
+		}
+	}
+	if (ourLegalDiscounts > 0){
+		legalNumber.Disc = legalNumber.Disc - ourLegalDiscounts;
 	} else {
-		certTotal = certTotal;
+		legalNumber.Disc = legalNumber.Disc;
 	}
 
-	discount = ((certTotal * 10) + (legalTotal * 55) + (countryTotal * 60) + (PDFTotal * 10) + legalNumber.Disc);
+	totalEst = totalEst - costNumber;
+
+	// discountCalculator(cert, docType, country, PDF, numofDocs, cost)
+
+	// discount = ((certTotal * 10) + (legalTotal * 55) + (countryTotal * 60) + (PDFTotal * 10) + legalNumber.Disc);
 
 }
 
@@ -1023,6 +1092,14 @@ function orderDelete(orderNum){
 	delete orderCost[orderNum];
 	delete orderTime[orderNum];
 	delete shippingAddress[orderNum];
+}
+
+function discountDelet(orderNumber){
+	var country = orderCountry[orderNumber];
+
+	delete orderCountry[orderNumber];
+	delete nonCertDoc[orderNumber];
+	delete docsForCountry[country];
 }
 
 function testFun(){
@@ -1456,10 +1533,12 @@ $('#cart').on('click', '.edit', function(){
 		orderArray.number = editLine - 1;
 
 		editDisc(orderArray.number)
+		discountDelet(orderArray.number)
 
 		$('#table'+ editLine).remove();
 		populateForm(orderArray.number);
 		$('#docCart').css('display','block');
+		$('html, body').animate({ scrollTop: $('#documentLine').offset().top }, 'Fast');
 
 });
 
@@ -1476,19 +1555,44 @@ $('#cart').on('click', '.delete', function(){
 
 $('#save').click(function(){
 	var 
+		// docType = $('#docType').val(),
+		// cert = ($('input[name=radioName]:checked', '#certForm').val()),
+		// legal = ($('input[name=radioName]:checked', '#legalForm').val()),
+		// country = $('#countries').val(),
+		// numOfCopies = $('#numOfCopies').val(),
+		// medium = $('#medium').val(),
+		// ref = ($('input[name=optradio]:checked', '#FHNPLs').val()),
+		// forward = $('#FAOpt').val(),
+		// emailCopy = ($('input[name=radioName]:checked', '#emailCopies').val()),
+		// cost = calculator(docType, cert, numOfCopies, emailCopy),
+		// time = timeEst(docType, cert),
+		// address = $('#address').val(),
+		// forAddress = $('#FAAdd').val();
 		docType = $('#docType').val(),
-		cert = ($('input[name=radioName]:checked', '#certForm').val()),
-		legal = ($('input[name=radioName]:checked', '#legalForm').val()),
+		cert = ($('input[name=certRadio]:checked', '#docTypeForm').val()),
+		legal = ($('input[name=legalRadio]:checked', '#docTypeForm').val()),
 		country = $('#countries').val(),
 		numOfCopies = $('#numOfCopies').val(),
 		medium = $('#medium').val(),
+		cartLine = 'line' + tot.count,
 		//ref = ($('input[name=optradio]:checked', '#FHNPLs').val()),
 		forward = $('#FAOpt').val(),
-		emailCopy = ($('input[name=radioName]:checked', '#emailCopies').val()),
+		count = (tot.count - 1),
+		emailCopy = ($('input[name=copyRadio]:checked', '#docTypeForm').val()),
 		cost = calculator(docType, cert, numOfCopies, emailCopy),
 		time = timeEst(docType, cert),
 		address = $('#address').val(),
 		forAddress = $('#FAAdd').val();
+
+		if (orderDocType.length < 1){
+			docsForCountry[country] = numOfCopies;
+		} else if (orderDocType.length > 0){
+			if (country in docsForCountry){
+				docsForCountry[country] = Number(docsForCountry[country]) + Number(numOfCopies);
+			} else {
+				docsForCountry[country] = numOfCopies
+			}
+		}
 
 		if(emailCopy == null){
 			emailCopy = "N/A"
@@ -1528,11 +1632,12 @@ $('#save').click(function(){
 		} else if ($('#forRef').prop('checked')){
 			docType = "FH/For";
 		}
-
+		discountCalculator(cert, docType, country, emailCopy, numOfCopies, cost)
 		orderSplice(orderArray.number, docType, docNum, cert, legal, country, medium, numOfCopies, forward, emailCopy, cost, shipAddress, time)
 
+
 		// var table = "<table id='table"+Number(orderArray.number+1)+"' class='table table-bordered text-center'><tr><th rowspan='5' class='text-center'>Document "+Number(orderArray.number+1)+"<br><br> <button  type='button' id='"+Number(orderArray.number+1)+"' name='"+Number(orderArray.number+1)+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name='"+Number(orderArray.number+1)+"' id='deleteBtn' type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th>Doc #</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(orderArray.number)]+"</td><td>"+orderDocNum[(orderArray.number)]+"</td><td>"+orderCert[(orderArray.number)]+"</td><td>"+orderLegal[(orderArray.number)]+"</td><td>"+orderCountry[(orderArray.number)]+"</td></tr><tr class='active text-center'><th>Media</th><th># copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th></tr><tr class='text-center'><td>"+orderMedia[(orderArray.number)]+"</td><td>"+orderNumOfCopies[(orderArray.number)]+"</td><td>"+orderForward[(orderArray.number)]+"</td><td>"+orderEmailCopy[(orderArray.number)]+"</td><td>"+orderCost[(orderArray.number)]+"</td></tr></table>";
-        var table = "<table id='table"+Number(orderArray.number+1)+"' class='table table-bordered text-center'><tr><th rowspan='6' class='text-center'>Document "+Number(orderArray.number+1)+"<br><br> <button  type='button' id='"+Number(orderArray.number+1)+"' name='"+Number(orderArray.number+1)+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name='"+Number(orderArray.number+1)+"' id='deleteBtn' type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th colspan='2'>Doc Number</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(orderArray.number)]+"</td><td colspan='2'>"+orderDocNum[(orderArray.number)]+"</td><td>"+orderCert[(orderArray.number)]+"</td><td>"+orderLegal[(orderArray.number)]+"</td><td>"+orderCountry[(orderArray.number)]+"</td></tr><tr class='active text-center'><th>Media</th><th>Copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th><th>Time</th></tr><tr class='text-center'><td>"+orderMedia[(orderArray.number)]+"</td><td>"+orderNumOfCopies[(orderArray.number)]+"</td><td>"+orderForward[(orderArray.number)]+"</td><td>"+orderEmailCopy[(orderArray.number)]+"</td><td>"+orderCost[(orderArray.number)]+"</td><td>"+orderTime[(orderArray.number)]+"</td></tr></table>";
+        var table = "<table id='table"+Number(orderArray.number+1)+"' class='table table-bordered text-center'><tr><th rowspan='6' class='text-center'>Document "+Number(orderArray.number+1)+"<br><br> <button  type='button' id='"+Number(orderArray.number+1)+"' name='"+Number(orderArray.number+1)+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name='"+Number(orderArray.number+1)+"' id='deleteBtn' type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th colspan='2'>Doc Number</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(orderArray.number)]+"</td><td colspan='2'>"+orderDocNum[(orderArray.number)]+"</td><td>"+orderCert[(orderArray.number)]+"</td><td>"+orderLegal[(orderArray.number)]+"</td><td>"+orderCountry[(orderArray.number)]+"</td></tr><tr class='active text-center'><th>Media</th><th>Copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th><th>Time</th></tr><tr class='text-center'><td>"+orderMedia[(orderArray.number)]+"</td><td>"+orderNumOfCopies[(orderArray.number)]+"</td><td>"+orderForward[(orderArray.number)]+"</td><td>"+orderEmailCopy[(orderArray.number)]+"</td><td>"+orderCost[(orderArray.number)]+"</td><td>"+orderTime[(orderArray.number)]+" Bus. Days</td></tr></table>";
 
 
 		$('#cart').append(table);
