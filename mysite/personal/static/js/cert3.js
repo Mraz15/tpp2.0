@@ -440,6 +440,14 @@ var tot = {
 	orderEmailCopy = [],
 	orderCost = [],
 	orderTime = [],
+	orderDetails = [],
+	// totalDiscounts = {
+	// 	cert: 0,
+	// 	legal: 0,
+	// 	country: 0,
+	// 	emailCopy: 0,
+	// 	ourLegalFees: 0,
+	// }
 	orderDisc = [],
 	shippingAddress = [],
 	forwardAdd = [],
@@ -609,6 +617,157 @@ function discountCalculator(cert, docType, country, PDF, numOfDocs, cost){
 	// $('#finalCost').html('$'+finalCost+'.00');
 
 };
+
+function pushOrderDetails(Country, DocType, DocNum, Cert, Legal, NumOfCopies, Media, Fwd, EmailCopy, Cost, Time){
+	orderDetails.push({
+		country: Country,
+		docType: DocType,
+		docNum: DocNum,
+		cert: Cert,
+		legal: Legal,
+		numOfCopies: NumOfCopies,
+		media: Media,
+		fwd: Fwd,
+		emailCopy: EmailCopy,
+		cost: Cost,
+		time: Time
+	})
+}
+
+function newDiscCalc(){
+	var totalDiscounts = {
+		cert: 0,
+		legal: 0,
+		country: 0,
+		emailCopy: 0,
+		ourLegalFees: 0
+	},
+		sameCountries = [],
+		iteratedList = [];
+
+	if (orderDetails.length == 1){
+		var country = orderDetails[0]['country'],
+		countryFee = countryFees[country];
+		if (orderDetails[0]['numOfCopies'] > 1)
+			if (orderDetails[0]['cert'] == 'Yes'){
+				totalDiscounts.cert = Number(totalDiscounts.cert) + Number(orderDetails[0]['numOfCopies'] - 1)
+			} else {
+				totalDiscounts.cert = totalDiscounts.cert
+			}
+			if (orderDetails[0]['legal'] == 'Yes')
+				if (orderDetails[0]['numOfCopies'] >= 3 && orderDetails[0]['numOfCopies'] < 6 ){
+					if( countryFee == 0){
+						totalDiscounts.ourLegalFees = totalDiscounts.ourLegalFees + (orderDetails[0]['numOfCopies'] * 15)
+					} else if (countryFee > 0){
+					totalDiscounts.ourLegalFees = totalDiscounts.ourLegalFees + (orderDetails[0]['numOfCopies'] * 30)
+					}
+				} else if (orderDetails[0]['numOfCopies'] >= 6){
+					if( countryFee == 0){
+						totalDiscounts.ourLegalFees = totalDiscounts.ourLegalFees + (orderDetails[0]['numOfCopies'] * 25)
+					} else if (countryFee > 0){
+						totalDiscounts.ourLegalFees = totalDiscounts.ourLegalFees + (orderDetails[0]['numOfCopies'] * 50)
+					}
+				}
+	} else if (orderDetails.length > 1){
+		for (var i=0; i < orderDetails.length; i++){
+			var country = orderDetails[i]['country'],
+				check = iteratedList.indexOf(i);
+			if (check >= 0){
+				continue
+			} else {
+				if (country in sameCountries){
+					continue
+				} else {
+					sameCountries[country] = Number(orderDetails[i]['numOfCopies'])
+				}
+				if (orderDetails[i]['numOfCopies'] > 1){
+					totalDiscounts.cert = Number(totalDiscounts.cert) + Number(orderDetails[i]['numOfCopies']) - 1	
+				}
+				for (var j=0; j < orderDetails.length; j++){
+					if (j==i){
+						continue
+					} else {
+						if (orderDetails[j]['country'] == country){
+							var country = orderDetails[j]['country'],
+							countryFee = countryFees[country];
+							iteratedList.push(j)
+
+							sameCountries[country] = Number(sameCountries[country]) + Number(orderDetails[j]['numOfCopies']);
+
+							totalDiscounts.cert = Number(totalDiscounts.cert) + Number(orderDetails[j]['numOfCopies'])
+
+							if (countryFee == 0){
+								totalDiscounts.legal = Number(totalDiscounts.legal) + 1
+							} else if (countryFee > 0){
+								totalDiscounts.legal = Number(totalDiscounts.legal) + 1
+								totalDiscounts.country = Number(totalDiscounts.country) + 1
+							}
+
+							if (orderDetails[j]['emailCopy'] == 'Yes' && orderDetails[i]['emailCopy'] == 'Yes'){
+								totalDiscounts.emailCopy = Number(totalDiscounts.emailCopy) + 1
+							} else {
+								continue
+							}
+							
+						} else {
+							continue
+						}
+					}
+				}
+			}
+		}
+	}
+	for (country in sameCountries){
+		var countryFee = countryFees[country];
+
+		if (sameCountries[country] >= 3 && sameCountries[country] < 6){
+			if (countryFee == 0){
+				totalDiscounts.ourLegalFees = totalDiscounts.ourLegalFees + (15 * sameCountries[country])
+			} else if (countryFee > 0){
+				totalDiscounts.ourLegalFees = totalDiscounts.ourLegalFees + (30 * sameCountries[country])
+			}
+		} else if (sameCountries[country] >= 6){
+			if (countryFee == 0){
+				totalDiscounts.ourLegalFees = totalDiscounts.ourLegalFees + (25 * sameCountries[country])
+			} else if (countryFee > 0){
+				totalDiscounts.ourLegalFees = totalDiscounts.ourLegalFees + (50 * sameCountries[country])
+			}
+		}
+	}
+	
+	var discount = 0,
+		totalEst = 0,
+		finalCost = 0;
+
+	discount = ((totalDiscounts.cert * 10) + (totalDiscounts.legal * 55) + (totalDiscounts.country * 60) + (totalDiscounts.emailCopy * 10) + totalDiscounts.ourLegalFees);
+
+	for (var x=0; x < orderDetails.length; x++){
+		var estimatedCost = orderDetails[x]['cost'],
+			costNumber = estimatedCost.replace('$','')
+			totalEst = Number(totalEst) + Number(costNumber)
+	}
+
+	// if (cert == 'Yes' && countryFee != 'call'){
+	// 	var costNumber = cost.replace('$','');
+	// }
+
+	// if (countryFee != 'call'){
+	// 	totalEst = Number(totalEst) + Number(costNumber);
+		
+	// } else {
+	// 	totalEst = totalEst;
+	// }
+
+	$('#totalCost').html('$'+totalEst+'.00');
+
+	$('#discount').html('-$'+discount+'.00');
+
+	var finalCost = totalEst - discount;
+
+	$('#finalCost').html('$'+finalCost+'.00');
+
+	// show totals in table
+}
 
 function editCalculator(cert, docType, country, PDF, numOfDocs, cost){
 	var certCheck = $.inArray('Yes', orderCert),
@@ -1856,6 +2015,8 @@ $('#addDoc').click(function(){
 		address = $('#address').val(),
 		forAddress = $('#FAAdd').val();
 
+	pushOrderDetails(country, docType, docNum, cert, legal, numOfCopies, medium, forward, emailCopy, cost, time)
+
 	// var appCheck = $.inArray('app', orderDocType);
 	// var assCheck = $.inArray('ass', orderDocType);
 
@@ -1918,7 +2079,8 @@ $('#addDoc').click(function(){
 	}
 
 	
-	discountCalculator(cert, legal, country, emailCopy, numOfCopies, cost)
+	// discountCalculator(cert, legal, country, emailCopy, numOfCopies, cost)
+	newDiscCalc();
 
 	// if(orderDocType.length > 0 || numOfCopies > 1){
 
@@ -1995,7 +2157,7 @@ $('#addDoc').click(function(){
 		$('#totalTime').html(maxTime + " Bus. Days");
 	}
 
-	var table = "<table id='table"+tot.count+"' class='form-group table table-bordered text-center'><tr><th rowspan='6' class='text-center'>Document "+tot.count+"<br><br> <button  type='button' id='"+tot.count+"' name='"+tot.count+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name="+tot.count+" type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th colspan='2'>Doc Number</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDocType[(count)]+"</td><td colspan='2'>"+orderDocNum[(count)]+"</td><td>"+orderCert[(count)]+"</td><td>"+orderLegal[(count)]+"</td><td>"+orderCountry[(count)]+"</td></tr><tr class='active text-center'><th>Media</th><th>Copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th><th>Time</th></tr><tr class='text-center'><td>"+orderMedia[(count)]+"</td><td>"+orderNumOfCopies[(count)]+"</td><td>"+orderForward[(count)]+"</td><td>"+orderEmailCopy[(count)]+"</td><td>"+orderCost[(count)]+"</td><td>"+orderTime[(count)]+" Bus. Days</td></tr></table>";
+	var table = "<table id='table"+tot.count+"' class='form-group table table-bordered text-center'><tr><th rowspan='6' class='text-center'>Document "+tot.count+"<br><br> <button  type='button' id='"+tot.count+"' name='"+tot.count+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name="+tot.count+" type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th colspan='2'>Doc Number</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+orderDetails[count]['docType']+"</td><td colspan='2'>"+orderDocNum[(count)]+"</td><td>"+orderCert[(count)]+"</td><td>"+orderLegal[(count)]+"</td><td>"+orderCountry[(count)]+"</td></tr><tr class='active text-center'><th>Media</th><th>Copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th><th>Time</th></tr><tr class='text-center'><td>"+orderMedia[(count)]+"</td><td>"+orderNumOfCopies[(count)]+"</td><td>"+orderForward[(count)]+"</td><td>"+orderEmailCopy[(count)]+"</td><td>"+orderCost[(count)]+"</td><td>"+orderTime[(count)]+" Bus. Days</td></tr></table>";
 
 	$('#cart').append(table);
 	$('#cart').css('display','table');
