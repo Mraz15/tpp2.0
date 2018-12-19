@@ -4,6 +4,9 @@ $(document).ready(function(){
 var tot = {
 	count: 1
 	},
+	editedOrder = {
+		number: 0
+	},
 	doc = {},
 	docNum = {},
 	cert = {},
@@ -1073,6 +1076,7 @@ function populateForm(number){
 		// };
 		
 		$('#save').css('display', 'block');
+		$('#cancelEdit').css('display', 'block');
 		$('#addDoc').css('display', 'none');
 		$('#documentLine').css('display','block');
 		$('#submitOrder').css('display', 'none');
@@ -1361,6 +1365,19 @@ $('#cancelAdd').click(function(){
 	$('#submitOrder').css('display','block');
 	$('#docCart').css('display','block');
 	$('#cancelAdd').css('display', 'none');
+	formReset();
+	$('html, body').animate({ scrollTop: $('#docCart').offset().top }, 'Fast');
+});
+
+$('#cancelEdit').click(function(){
+	$('#documentLine').css('display', 'none');
+	$('#addDoc').css('display', 'none');
+	$('#save').css('display', 'block');
+	$('#anotherDoc').css('display','block');
+	$('#submitOrder').css('display','block');
+	$('#docCart').css('display','block');
+	$('#cancelEdit').css('display', 'none');
+	formReset();
 	$('html, body').animate({ scrollTop: $('#docCart').offset().top }, 'Fast');
 });
 
@@ -1381,9 +1398,10 @@ $('#clientInforForm').submit(function(e){
 
 $('#cart').on('click', '.edit', function(){
 	var editLine = $(this).attr('name');
+	editedOrder.number = editLine;
 
 	populateForm(editLine);
-	orderDetails.splice(editLine,1)
+	$('#cancelAdd').css('display', 'none');
 
 	$('#docCart').css('display','block');
 	$('html, body').animate({ scrollTop: $('#documentLine').offset().top }, 'Fast');
@@ -1406,6 +1424,7 @@ $('#cart').on('click', '.delete', function(){
 });
 
 $('#save').click(function(){
+	orderDetails.splice(editedOrder.number,1)
 	var 
 		docType = $('#docType').val(),
 		cert = ($('input[name=certRadio]:checked', '#docTypeForm').val()),
