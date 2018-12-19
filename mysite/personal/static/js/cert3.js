@@ -676,12 +676,17 @@ function newDiscCalc(){
 
 
 	$('#totalCost').html('$'+totalEst+'.00');
+	$('#totalCost').val(totalEst);
+
+
 
 	$('#discount').html('-$'+discount+'.00');
+	$('#discount').val(discount);
 
 	var finalCost = totalEst - discount;
 
 	$('#finalCost').html('$'+finalCost+'.00');
+	$('#finalCost').val(finalCost);
 }
 
 function calculator(docType, cert, numOfCopies, PDFCopy){
@@ -1577,8 +1582,8 @@ $('#clientInfoForm').validate({
 		ref_num: "Please enter your reference number, if you do not have one enter \"None\""
     },
     submitHandler: function(form){	
-			if (orderDocNum.length > 0){
-				var counter2 = 0;
+			 if (orderDetails.length > 0){
+				// var counter2 = 0;
 				var json_data = []
 				json_data.push({
 					first_Name: $('#first_name').val(),
@@ -1589,25 +1594,33 @@ $('#clientInfoForm').validate({
 					ref: $('#ref_num').val(),
 					instructions: $('#specialInstructions').val(),
 				})
-				for (var i=0; i<orderDocNum.length; i++){
-					counter2 ++
-					json_data.push({
-						counter: counter2,
-						docNum: orderDocNum[i],
-						docType: orderDocType[i],
-						docCert: orderCert[i],
-						docLegal: orderLegal[i],
-						docCountry: orderCountry[i],
-						docNumofCopies: orderNumOfCopies[i],
-						docMedia: orderMedia[i],
-						docForward: orderForward[i],
-						docEmail: orderEmailCopy[i],
-						docCost: orderCost[i],
-						shipInfo: shippingAddress[i],
-						docTime: orderTime[i]
-					})
-		
+				json_data.push({
+					totalEst: $('#totalCost').val(),
+					discount: $('#discount').val(),
+					finalEst: $('#finalCost').val(),
+				})
+				for (var i=0; i<orderDetails.length; i++){
+					json_data.push(orderDetails[i]);
 				}
+				// for (var i=0; i<orderDocNum.length; i++){
+				// 	counter2 ++
+				// 	json_data.push({
+				// 		counter: counter2,
+				// 		docNum: orderDocNum[i],
+				// 		docType: orderDocType[i],
+				// 		docCert: orderCert[i],
+				// 		docLegal: orderLegal[i],
+				// 		docCountry: orderCountry[i],
+				// 		docNumofCopies: orderNumOfCopies[i],
+				// 		docMedia: orderMedia[i],
+				// 		docForward: orderForward[i],
+				// 		docEmail: orderEmailCopy[i],
+				// 		docCost: orderCost[i],
+				// 		shipInfo: shippingAddress[i],
+				// 		docTime: orderTime[i]
+				// 	})
+		
+				// }
 				window.location.replace("/thanks?order=" + JSON.stringify(json_data));
 				// $.post( "/thanks?order=" + JSON.stringify(json_data), 
 				// function(xml, textStatus, xhr){

@@ -63,7 +63,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         <h3 style=" color: white !important" class="panel-title text-center">Order Information</h3>
     </div>
     {% for item in order %}
-    {% if forloop.counter >= 2 %}
+    {% if forloop.counter >= 3 %}
     <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
         <table class="table">
 
@@ -82,52 +82,103 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
             </tr>
             <tr>
                 <td>Certified</td>
-                <td>{{item.docCert}}</td>
+                <td>{{item.cert}}</td>
             </tr>
             <tr>
                 <td>Legalization</td>
-                <td>{{ item.docLegal }}</td>
+                <td>{{ item.legal }}</td>
             </tr>
             <tr>
                 <td>Country</td>
-                <td>{{ item.docCountry }}</td>
+                <td>{{ item.country }}</td>
             </tr>
             <tr>
                 <td>Number of Copies</td>
-                <td>{{ item.docNumofCopies }}</td>
+                <td>{{ item.numOfCopies }}</td>
             </tr>
             <tr>
                 <td>Document Media</td>
-                <td>{{ item.docMedia }}</td>
+                <td>{{ item.media }}</td>
             </tr>
             <tr>
                 <td>Forward to Associate</td>
-                <td>{{ item.docForward }}</td>
+                <td>{{ item.fwd }}</td>
             </tr>
             <tr>
                 <td>Email a PDF Copy</td>
-                <td>{{ item.docEmail }}</td>
+                <td>{{ item.emailCopy }}</td>
+            </tr>
+            <tr>
+                 <td>Shipping Info</td>
+                <td>{{ item.shippingInfo }}</td>
             </tr>
             <tr>
                 <td>Cost</td>
-                <td>{{ item.docCost }}</td>
+                <td>{{ item.cost }}</td>
             </tr>
             <tr>
                 <td>Time</td>
-                <td>{{ item.docTime }}</td>
+                <td>{{ item.time }} Business Days</td>
             </tr>
         </table>
         <hr>
     </div>
-
     {% endif %}
     {% endfor %}
 </div>
-<div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
+
+
+    <div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
+        <div style="background-color: #245580 !important" class="panel-heading">
+            <h3 style=" color: white !important" class="panel-title text-center">Special Instructions & Final Cost Estimate</h3>
+        </div>
+    <div class="container col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-1">
+        <table class="table">
+            <thead>
+                <th class="text-center">
+                    Special Instructions
+                </th>
+            </thead>
+            <tr>
+                {% if order.0.instructions %}
+                <td class="text-center">{{order.0.instructions}}</td>
+                {% else %}
+                <td class="text-center">No insturctions or comments were made</td>
+                {% endif %}
+            </tr>
+        </table>
+        </div>
+        <div class="container col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-1">
+        <table class="table">
+            <thead>
+                <th class="text-center" colspan="2">
+                    Cost Estimate
+                </th>
+            </thead>
+            <tr>
+                <td> Totat Estimate </td>
+                <td class="text-center">${{order.1.totalEst}}.00</td>
+            </tr>
+            <tr>
+                <td> Discount </td>
+                {% if order.1.discount == "0" %}
+                <td class="text-center">$0.00</td>
+                {% else %}
+                <td class="text-center">-${{order.1.discount}}.00</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td> <b>Final Estimate</b> </td>
+                <td class="text-center"><b>${{order.1.finalEst}}.00</b></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- <div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
     <div style="background-color: #245580 !important" class="panel-heading">
         <h3 style=" color: white !important" class="panel-title text-center">Special Instructions & Shipping Information</h3>
-    </div>
-    <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
+    </div> -->
+    <!-- <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
         <table class="table">
             <thead>
                 <th class="text-center">
@@ -142,7 +193,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                 {% endif %}
             </tr>
         </table>
-    </div>
+    </div> -->
     <!-- <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
             <table class="table">
                 <thead>
@@ -159,16 +210,17 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                 </tr>
             </table>
         </div> -->
-</div>
+<!-- </div> -->
 <div>
-        <a role="button" href="/uspto_docs" class="btn btn-primary col-lg-2 col-lg-offset-3 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
-        id='edit'>Edit Order</a>
     <a role="button" class="btn btn-primary col-lg-2 col-lg-offset-2 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
         id='submit'>Submit Order</a>
+        <a role="button" class="btn btn-primary col-lg-2 col-lg-offset-2 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
+        id='submit'>Submit Order</a>
+        <div class="g-recaptcha text-center" data-sitekey="6Ld9jlEUAAAAAIxIA9qbfa-xcA2AL5QyFn5yxfYg"></div>
 </div>
 
 
-<div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
+<div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2" style="display: none">
         <input id="listLength" value="{{ order|length}}"/>
         <form id="orderForm">
             <input type="text" name="firstName" value="{{order.0.first_Name}}"/>
@@ -178,25 +230,26 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
             <input type="text" name="email" value="{{order.0.email}}"/>
             <input type="text" name="ref" value="{{order.0.ref}}"/>
             <input type="text" name="instructions" value="{{order.0.instructions}}"/>
+            <input type="text" name="totalEst" value="{{order.1.totalEst}}"/>
+            <input type="text" name="discount" value="{{order.1.discount}}"/>
+            <input type="text" name="finalEst" value="{{order.1.finalEst}}"/>
             {% for item in order %}
-            {% if forloop.counter >= 2 %}
+            {% if forloop.counter >= 3 %}
             <input type="text" id="doctype" name="docType{{forloop.counter}}" value="{{item.docType}}"/>
             <input type="text" name="docNum{{forloop.counter}}" value="{{item.docNum}}"/>
-            <input type="text" name="docCert{{forloop.counter}}" value="{{item.docCert}}"/>
-            <input type="text" name="docLegal{{forloop.counter}}" value="{{item.docLegal}}"/>
-            <input type="text" name="docCountry{{forloop.counter}}" value="{{item.docCountry}}"/>
-            <input type="text" name="docNumofCopies{{forloop.counter}}" value="{{item.docNumofCopies}}"/>
-            <input type="text" name="docMedia{{forloop.counter}}" value="{{item.docMedia}}"/>
-            <input type="text" name="docForward{{forloop.counter}}" value="{{item.docForward}}"/>
-            <input type="text" name="docEmail{{forloop.counter}}" value="{{item.docEmail}}"/>
-            <input type="text" name="docCost{{forloop.counter}}" value="{{item.docCost}}"/>
-            <input type="text" name="docTime{{forloop.counter}}" value="{{item.docTime}}"/>
-            <input type="text" name="shipInfo{{forloop.counter}}" value="{{item.shipInfo}}"/>
+            <input type="text" name="docCert{{forloop.counter}}" value="{{item.cert}}"/>
+            <input type="text" name="docLegal{{forloop.counter}}" value="{{item.legal}}"/>
+            <input type="text" name="docCountry{{forloop.counter}}" value="{{item.country}}"/>
+            <input type="text" name="docNumofCopies{{forloop.counter}}" value="{{item.numOfCopies}}"/>
+            <input type="text" name="docMedia{{forloop.counter}}" value="{{item.media}}"/>
+            <input type="text" name="docForward{{forloop.counter}}" value="{{item.fwd}}"/>
+            <input type="text" name="docEmail{{forloop.counter}}" value="{{item.emailCopy}}"/>
+            <input type="text" name="docCost{{forloop.counter}}" value="{{item.cost}}"/>
+            <input type="text" name="docTime{{forloop.counter}}" value="{{item.time}}"/>
+            <input type="text" name="shipInfo{{forloop.counter}}" value="{{item.shippingInfo}}"/>
             {% endif %}
             {% endfor %}
-            <a role="button" class="btn btn-primary col-lg-2 col-lg-offset-2 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
-            id='submit'>Submit Order</a>
-            <div class="g-recaptcha text-center" data-sitekey="6Ld9jlEUAAAAAIxIA9qbfa-xcA2AL5QyFn5yxfYg"></div>
+
         </form>
     
     </div>

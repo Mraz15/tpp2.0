@@ -27,7 +27,10 @@ def email(request):
     address = json_data['address']
     email = json_data['email']
     ref = json_data['ref']
-    instructions = json_data['instructions']  
+    instructions = json_data['instructions']
+    totalEst = json_data['totalEst']
+    discount = json_data['discount']
+    finalEst = json_data['finalEst']  
     docType = []
     docNum = []
     docCert = []
@@ -47,7 +50,7 @@ def email(request):
     #     instructions = "None given"
     
 
-    for i in range(1, 1 + len(json_data)/12):
+    for i in range(2, 2 + ((len(json_data)-10)/12)):
         docTypeNumber = 'docType' + str(i+1)
         docNumNumber = 'docNum' + str(i+1)
         docCertNumber = 'docCert' + str(i+1)
@@ -132,9 +135,14 @@ def email(request):
 
     specialInstructions = "Special instructions or comments: " + str(instructions) + "\n\n" 
 
+    orderEstimate = ("Order Estimate: \n"
+    + 'Total Estimate: ' + totalEst + '\n'
+    + 'Discount: ' + discount + '\n'
+    + 'Final Estimate: ' + finalEst + '\n\n')
+
     emailFooter = "This is an automated email and we will not respond to replys sent to this email address. \n If you have any questions or concerns please send an email to us at info@thepatentplace.com or call us at 1-703-415-1077. \n \n \n Sincerely,\n Zac Mraz \n Chief Executive Officer\n The Patent Place, Inc.\n 301 Franklin St., 3rd Floor \n Alexandria, VA 22314 \n Tel: 703-415-1077 \n Email: info@thepatentplace.com"
 
-    text = clientInfo + orderText + specialInstructions
+    text = clientInfo + orderText + specialInstructions + orderEstimate
 
     BODY = "\r\n".join([
         "From: %s" % settings.FROM_EMAIL,
@@ -149,7 +157,7 @@ def email(request):
     + 'Below is summary of your order, if you see any errors or have any concerns please email us at info@thepatentplace.com. Please do not reply to this email, it was computer generated and we do not check this email account.' +'\n\n\n'
     )
 
-    clientMessage= clientText + clientInfo + orderText + specialInstructions + emailFooter
+    clientMessage= clientText + clientInfo + orderText + specialInstructions + orderEstimate + emailFooter
 
     clientBody = "\r\n".join([
     "From: %s" % settings.FROM_EMAIL,
