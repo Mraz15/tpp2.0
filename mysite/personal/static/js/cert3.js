@@ -1,7 +1,5 @@
 $(document).ready(function(){
 "use strict";
-
-//test
  
 var tot = {
 	count: 1
@@ -434,7 +432,7 @@ var tot = {
 	forwardAdd = [],
 	clickedAdd = [];
 
-function pushOrderDetails(Country, DocType, DocNum, Cert, Legal, NumOfCopies, Media, Fwd, EmailCopy, Cost, Time){
+function pushOrderDetails(Country, DocType, DocNum, Cert, Legal, NumOfCopies, Media, Fwd, EmailCopy, Cost, Time, ShippingInfo){
 	orderDetails.push({
 		country: Country,
 		docType: DocType,
@@ -446,7 +444,8 @@ function pushOrderDetails(Country, DocType, DocNum, Cert, Legal, NumOfCopies, Me
 		fwd: Fwd,
 		emailCopy: EmailCopy,
 		cost: Cost,
-		time: Time
+		time: Time,
+		shippingInfo: ShippingInfo
 	})
 }
 
@@ -961,10 +960,6 @@ function formReset(){
 
 }
 
-function testFun(){
-	$('#test3').text('it works');
-}
-
 function populateForm(number){
 	var legal = orderDetails[number]['legal'],
 		cert = orderDetails[number]['cert'],
@@ -1064,6 +1059,12 @@ function populateForm(number){
 			$("#copiesYes").prop("checked", false);
 		};
 
+		if (forwardAdd.length >= 1){
+			// $('#fillAddress').css('display', 'block');
+			$('#FAaddress').css('display', 'block');
+			$('#FAAdd').val(orderDetails[number]['shippingInfo']);
+		}
+
 		// if (forward == 'Yes'){
 		// 	$('#FAaddress').css('display','block');
 		// 	$('#FAAdd').val(shipAddress);
@@ -1100,77 +1101,42 @@ $('#FAOpt').change(function(){
 
 	if(FAOpt =='Yes' && forwardAdd.length > 0){
 		$('#fillAddress').css('display','block');
+		for (var i=0; i<orderDetails.length; i++){
+			$('#addressCheck'+i).prop('checked', false)
+		}
 	}
-	// } else if ((FAOpt =='Yes') && (forwardAdd.length > 2)){
-	// 	$('#test3').html('more than 2');
-	// }
 	else {
 		$('#fillAddress').css('display','none');
 	}
 
 });
 
-$('#docTypeForm input[name=addCheck]').is(':checked', function() {
-	var add = $(this).val()
-	$('#test3').html('it works!')
-	if (add >= 0){
-	$('#FAAdd').val(shippingAddress[add]);
-	}
-});
-
-if($('.addCheck').is(':checked')){
-	var add = $(this).val();
-	$('#test3').html('it works!')
-	if (add >= 0){
-	$('#FAAdd').val(shippingAddress[add]);
-	}
-}
-
-$('.addCheck').prop('checked', function(){
-	var add = $(this).val();
-	$('#test3').html('it works!')
-	if (add >= 0){
-	$('#FAAdd').val(shippingAddress[add]);
-	}
-});
-
 $('#fillAddress').on('change','.addCheck', function(){
 	var add = $(this).val();
 
 	if ($(this).prop('checked')){
-		clickedAdd.push(add)
-		if (clickedAdd.length > 1){
-			$('#FAAdd').val(shippingAddress[add]);
-			for (var i=0; i <clickedAdd.length; i++){
-				if ( i != add){
-					var idName = 'addCheck'+i
-					$('#'+idName).prop('checked', false);
-				}
-			}
+		// clickedAdd.push(add)
+		$('#FAAdd').val(orderDetails[add]['shippingInfo']);
+		// if (clickedAdd.length > 1){
+		// 	$('#FAAdd').val(shippingAddress[add]);
+		// 	for (var i=0; i <clickedAdd.length; i++){
+		// 		if ( i != add){
+		// 			var idName = 'addCheck'+i
+		// 			$('#'+idName).prop('checked', false);
+		// 		}
+		// 	}
 
-		} else {
-			$('#FAAdd').val(shippingAddress[add]);
-		}
-		$('#test3').html('it works!')
-		if (add >= 0){
+		// } else {
+		// 	$('#FAAdd').val(shippingAddress[add]);
+		// }
+		// if (add >= 0){
 		
-		}
+		// }
 	} else{
-		clickedAdd.splice(add,1);
+		// clickedAdd.splice(add,1);
 		$('#FAAdd').val('')
 	}
 });
-
-function checkedAddReset(){
-	for (var i=0; i < clickedAdd.length; i++){
-		var idName = 'addCheck'+i;
-		if($('#'+idName).prop('checked', true)){
-			$('#'+idName).prop('checked', false);
-		}
-		clickedAdd.length = 0;
-	}
-	
-}
 
 $('#docTypeForm input[name=certRadio]').on('change', function() {
    cert.val = ($('input[name=certRadio]:checked', '#docTypeForm').val()); 
@@ -1217,9 +1183,64 @@ $('#medium').change(function(){
 	}
 });
 
-$('#testBtn').click(function(){
-	$('#test3').text(cert.val);
-});
+function autoAddressFill(forAddress){
+	if (forAddress != ''){
+		// for (var x=0; x < forwardAdd.length; x++){
+		// 	$('#addCheck'+x).remove()
+		// }
+		var forwardingAddressCheck = forwardAdd.indexOf(forAddress);
+		if (forwardingAddressCheck < 0 ){
+			if(orderDetails.length <= 1){
+				var addCount = 0;
+				var autofill = "<label id='addCheck0'><input type='checkbox' name='addCheck' class='addCheck' value="+addCount+" id='addressCheck" + addCount +"'>Click, if you would like this document also forwarded to: "+forAddress+"</label>"
+				$('#addressCheckbox').append(autofill)
+				$('#addressCheckbox').css('display', 'block');
+				forwardAdd.push(orderDetails[0]['shippingInfo'])
+			} else {
+				$('#addressCheckbox').css('display', 'none');
+				$('#addCheck0').remove();
+				var iteratedAddList = [];
+				if (forwardAdd.length == 1){
+					forwardAdd = []
+				}
+				for (var i=0; i<orderDetails.length; i++){
+					var shippingAdd = orderDetails[i]['shippingInfo'],
+						addCheck = iteratedAddList.indexOf(i);
+					if (addCheck >= 0 ){
+						continue
+					} else {
+						var addCount = i,
+							addressCheck = forwardAdd.indexOf(orderDetails[i]['shippingInfo']);
+						if (addressCheck < 0){
+							var autofill = "<label id='addCheck" + addCount +"'><input type='radio' name='addCheck' class='addCheck' value="+addCount+" id='addressCheck" + addCount +"'>Click, if you would like this document also forwarded to: "+shippingAdd+"</label>"
+							$('#addressRadio').append(autofill);
+							$('#addressRadio').css('display', 'block');
+							forwardAdd.push(orderDetails[i]['shippingInfo'])
+						} else {
+							continue
+						}
+						for (var j=0; j<orderDetails.length; j++){
+							var currentShippingAdd = orderDetails[j]['shippingInfo']
+							if (j==i){
+								continue
+							}
+							var jCheck = forwardAdd.indexOf(orderDetails[j]['shippingInfo']);
+							if (currentShippingAdd != shippingAdd && jCheck < 0){
+								iteratedAddList.push(j)
+								var addCount = j;
+								var autofill = "<label id='addCheck" + addCount +"'><input type='radio' name='addCheck' class='addCheck' id='addressCheck" + addCount +"' value="+addCount+">Click, if you would like this document also forwarded to: "+currentShippingAdd+"</label>"
+								$('#addressRadio').append(autofill)
+								forwardAdd.push(orderDetails[j]['shippingInfo'])
+							} else {
+								iteratedAddList.push(j)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 function tableMaker(){
 	for(var i=0; i<orderDetails.length; i++){
@@ -1263,29 +1284,22 @@ $('#addDoc').click(function(){
 		address = $('#address').val(),
 		forAddress = $('#FAAdd').val();
 
-		if(emailCopy == null){
-			emailCopy = "N/A"
-		}
+	if(emailCopy == null){
+		emailCopy = "N/A"
+	}
+
+
 
 	if(medium == 'PDF'){
-		var shipAddress = 'Email'
+		var shippingInfo = 'Email'
 	} else if (medium == 'Paper'){
-		if (forward == 'No'){
-			var shipAddress = address;
-		} else if (forward == 'Yes'){
-			var shipAddress = forAddress;
+		if(forAddress != ''){
+			var shippingInfo = forAddress;
+		} else {
+			var shippingInfo = address;
 		}
 	}
 
-	if (forAddress != ''){
-		var forAddCheck = $.inArray(forAddress, forwardAdd);
-		if (forAddCheck == -1){
-			forwardAdd.push(forAddress);
-			var addCount = forwardAdd.length -1;
-			var autofill = "<label class='checkbox-inline'><input type='checkbox' name='addCheck' class='addCheck' id='addCheck" + addCount +"' value="+addCount+">Click, if you would like this document also forwarded to: "+forAddress+"</label>"
-			$('#fillAddress').append(autofill)
-		}
-	}
 	docNumEnter(docType);
 	
 	if (($('#NPLs').prop('checked')) && ($('#USRef').prop('checked')) && ($('#forRef').prop('checked'))){
@@ -1305,28 +1319,16 @@ $('#addDoc').click(function(){
 	}
 
 	
-	pushOrderDetails(country, docType, docNum, cert, legal, numOfCopies, medium, forward, emailCopy, cost, time);
+	pushOrderDetails(country, docType, docNum, cert, legal, numOfCopies, medium, forward, emailCopy, cost, time, shippingInfo);
 	newDiscCalc();
-
-	//DO NOT DELETE THIS!!!!!! NEED TO REWORK FOR THE NEW UPDATE!!!!!!!!
-	// var checkCall = $.inArray('Call', orderCost);
-	// if (checkCall >= 0){
-	// 	$('#callNotice').css('display', 'block');
-	// 	$('#totalTime').html('Call');
-	// } else {
-	// 	$('#callNotice').css('display', 'none');
-	// 	var maxTime = Math.max.apply(Math, orderTime);
-	// 	$('#totalTime').html(maxTime + " Bus. Days");
-	// }
-
-
+	autoAddressFill(forAddress);
 
 	tableMaker()
 	
 	tot.count++;
 	formReset();
 
-	checkedAddReset();
+	// checkedAddReset();
 	$('#submitOrder').css('display','block');
 	$('#anotherDoc').css('display','block');
 	$('#docCart').css('display','block');
@@ -1425,28 +1427,15 @@ $('#save').click(function(){
 			emailCopy = "N/A"
 		}
 
-
-		//MIGHT WANT TO KEEP OR REWORK DO NOT DELETE!!!!!!!!
-		// if(emailCopy == null){
-		// 	emailCopy = "N/A"
-		// }
-
-		// if(medium == 'PDF'){
-		// 	var shipAddress = 'Email'
-		// } else if (medium == 'Paper'){
-		// 	if (forward == 'No'){
-		// 		var shipAddress = address;
-		// 	} else if (forward == 'Yes'){
-		// 		var shipAddress = forAddress;
-		// 	}
-		// }
-
-		// if (forAddress != null){
-		// 	var forAddCheck = $.inArray(forAddress, forwardAdd);
-		// 	if (forAddCheck == -1){
-		// 		forwardAdd.push(forAddress);
-		// 	}
-		// }
+		if(medium == 'PDF'){
+			var shippingInfo = 'Email'
+		} else if (medium == 'Paper'){
+			if(forAddress != ''){
+				var shippingInfo = forAddress;
+			} else {
+				var shippingInfo = address;
+			}
+		}
 
 		docNumEnter(docType);
 
@@ -1466,8 +1455,9 @@ $('#save').click(function(){
 			docType = "FH/For";
 		}
 
-		pushOrderDetails(country, docType, docNum, cert, legal, numOfCopies, medium, forward, emailCopy, cost, time)
+		pushOrderDetails(country, docType, docNum, cert, legal, numOfCopies, medium, forward, emailCopy, cost, time, shippingInfo)
 		newDiscCalc()
+		autoAddressFill(forAddress);
 
 
 		//DO NOT DELETE!!!!!!!!!
