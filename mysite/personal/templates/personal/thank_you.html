@@ -172,51 +172,27 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                 <td class="text-center"><b>${{order.1.finalEst}}.00</b></td>
             </tr>
         </table>
+        <p id="callNotice" style="display: none"><b>IMPORTANT:</b> We do not currenlty have the consulate fees for one or more of the countries selected. The Final Est. shown above is <b>NOT</b> an accurate estimate. If you would like an estimate before you proceed with this order please call our office, or note in the special instructions box (provided below) that an estimate is needed before processing. Thank you.</p>
+        <p id="nonCertNotice" style="display: none"><b>IMPORTANT:</b> Pricing for one or more of the documents selected will be based on the total number of pages copied. We will not know the page total until the file(s) are made availabe for us to copy. If you would like an estimate before you proceed, please note in the special insturctions box (provided below) that an estimate is needed before processing. Thank you.</p>
+        {% for item in order %}
+        {% if forloop.counter >= 3 %}
+        {% if item.cost == "Call" %}
+            <script>
+            $('#callNotice').css('display', 'block');
+            </script>
+        {% endif %}
+        {% if item.cert == "No" and item.docType != "pat" %}
+            <script>
+                $('#nonCertNotice').css('display', 'block');
+            </script>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
     </div>
 </div>
-<!-- <div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
-    <div style="background-color: #245580 !important" class="panel-heading">
-        <h3 style=" color: white !important" class="panel-title text-center">Special Instructions & Shipping Information</h3>
-    </div> -->
-    <!-- <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
-        <table class="table">
-            <thead>
-                <th class="text-center">
-                    Special Instructions
-                </th>
-            </thead>
-            <tr>
-                {% if order.0.instructions %}
-                <td>{{order.0.instructions}}</td>
-                {% else %}
-                <td>No insturctions or comments were made</td>
-                {% endif %}
-            </tr>
-        </table>
-    </div> -->
-    <!-- <div class="container col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0">
-            <table class="table">
-                <thead>
-                    <th class="text-center">
-                        Shipping Information
-                    </th>
-                </thead>
-                <tr>
-                    {% if order.1.docForward == 'Yes' %}
-                    <td>{{order.1.shipInfo}}</td>
-                    {% else %}
-                    <td>{{order.0.address}}</td>
-                    {% endif %}
-                </tr>
-            </table>
-        </div> -->
-<!-- </div> -->
 <div>
     <a role="button" class="btn btn-primary col-lg-2 col-lg-offset-2 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
         id='submit'>Submit Order</a>
-        <a role="button" class="btn btn-primary col-lg-2 col-lg-offset-2 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
-        id='submit'>Submit Order</a>
-        <div class="g-recaptcha text-center" data-sitekey="6Ld9jlEUAAAAAIxIA9qbfa-xcA2AL5QyFn5yxfYg"></div>
 </div>
 
 
@@ -254,5 +230,5 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     
     </div>
 
-<script src='https://www.google.com/recaptcha/api.js'></script>
+
 {% endblock %}

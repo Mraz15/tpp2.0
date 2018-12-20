@@ -3,11 +3,14 @@ from __future__ import unicode_literals
 
 import smtplib
 
+
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 import smtplib
 import json
 from django.conf import settings
+
+
 # Create your views here.
 
 def index(request):
@@ -239,3 +242,4 @@ def thanks(request):
 
 def confirmation(request):
     return render(request, 'personal/confirmation.html')
+
