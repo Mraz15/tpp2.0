@@ -136,9 +136,9 @@ def email(request):
     specialInstructions = "Special instructions or comments: " + str(instructions) + "\n\n" 
 
     orderEstimate = ("Order Estimate: \n"
-    + 'Total Estimate: ' + totalEst + '\n'
-    + 'Discount: ' + discount + '\n'
-    + 'Final Estimate: ' + finalEst + '\n\n')
+    + 'Total Estimate: $' + totalEst + '.00\n'
+    + 'Discount: $' + discount + '.00\n'
+    + 'Final Estimate: $' + finalEst + '.00\n\n')
 
     emailFooter = "This is an automated email and we will not respond to replys sent to this email address. \n If you have any questions or concerns please send an email to us at info@thepatentplace.com or call us at 1-703-415-1077. \n \n \n Sincerely,\n Zac Mraz \n Chief Executive Officer\n The Patent Place, Inc.\n 301 Franklin St., 3rd Floor \n Alexandria, VA 22314 \n Tel: 703-415-1077 \n Email: info@thepatentplace.com"
 

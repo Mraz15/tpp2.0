@@ -678,8 +678,6 @@ function newDiscCalc(){
 	$('#totalCost').html('$'+totalEst+'.00');
 	$('#totalCost').val(totalEst);
 
-
-
 	$('#discount').html('-$'+discount+'.00');
 	$('#discount').val(discount);
 
@@ -692,6 +690,10 @@ function newDiscCalc(){
 function calculator(docType, cert, numOfCopies, PDFCopy){
 	var country = document.getElementById('countries').value,
 		steps = 0;
+	
+	if(country == ''){
+		country='N/A'
+	}
 
 	if (countryFees[country] > 0) {
         steps = 2;
@@ -699,13 +701,15 @@ function calculator(docType, cert, numOfCopies, PDFCopy){
         steps = 1;
     } else if (countryFees[country] === "call") {
         steps = "call"; 
+	} else {
+		steps = 0;
 	}
 
 	if (steps == "call"){
 		return "Call"
 	} else {
 
-	if (country != 'No') {
+	if (country != 'N/A') {
 		if (steps == 1){
 			if (PDFCopy == 'Yes'){
 			return "$" + Math.round((((ourFees.legal) + (certFees[docType]) + (ourCertFees[docType]) + ((stateDept * 0.18)+stateDept)) * numOfCopies) +stateCour +ourFees.Forward);	
@@ -761,19 +765,25 @@ function timeEst(docType, cert){
 	var country = document.getElementById('countries').value,
 		steps = 0;
 
+	if (country == ''){
+		country ='N/A'
+	}
+
 	if (countryFees[country] > 0) {
         steps = 2;
     } else if (countryFees[country] === 0) {
         steps = 1;
     } else if (countryFees[country] === "call") {
         steps = "call"; 
+	} else {
+		steps = 0;
 	}
 
 	if (steps =="call"){
 		return "-"
 	} else {
 
-	if (country != 'No') {
+	if (country != 'N/A') {
 		if (steps == 1){
 			return usptoTime + StateDeptTime + 1;
 		} else if (steps > 1) {
@@ -901,6 +911,8 @@ function certOptions(cert){
 		$('#countries').css('display','none');
 		$('#countries').prop('selectedIndex',0);
 		$('#copyOpt').prop('selectedIndex',0);
+		$('#medium').prop('selectedIndex', 0);
+		$('#medium').prop('disabled', false);
 	}
 }
 
@@ -1057,6 +1069,10 @@ function populateForm(number){
 			$("#legalYes").prop("checked", true);
 			$("#legalNo").prop("checked", false);
 			$("#countries").css('display', 'block');
+		} else {
+			$("#legalYes").prop("checked", false);
+			$("#legalNo").prop("checked", true);
+			$("#countries").css('display', 'none');
 		}
 
 		if (PDFCopy == 'Yes'){
@@ -1172,6 +1188,7 @@ $('#docTypeForm input[name=legalRadio]').on('change', function() {
    	$('#countries').css('display', 'block');
    	$('#medium').prop('selectedIndex',1);
 	$("#medium").prop("disabled", true);
+	$('#copyOpt').css('display','block');
    } else if (legal.val == 'No') {
    	$('#countries').css('display', 'none');
    	$('#medium').prop('selectedIndex',0);
@@ -1266,6 +1283,14 @@ function tableMaker(){
 		cost = orderDetails[i]['cost'],
 		time = orderDetails[i]['time'];
 
+		if (country ==''){
+			country = "N/A"
+		}
+
+		if (emailCopy == null){
+			emailCopy = "N/A"
+		}
+
 		$('#table'+ i).remove();
 		var table = "<table id='table"+i+"' class='form-group table table-bordered text-center'><tr><th rowspan='6' class='text-center'>Document "+count+"<br><br> <button  type='button' id='"+i+"' name='"+i+"' class='btn btn-primary text-center edit'>Edit</button><br><br><button name="+i+" type='button' class='btn btn-danger text-center delete'>Remove</button></th></tr><tr class='active text-center'><th>Doc Type</th><th colspan='2'>Doc Number</th><th>Cert</th><th>Legal</th><th>Country</th></tr><tr class='text-center'><td>"+docType+"</td><td colspan='2'>"+docNum+"</td><td>"+cert+"</td><td>"+legal+"</td><td>"+country+"</td></tr><tr class='active text-center'><th>Media</th><th>Copies</th><th>Forward</th><th>PDF Copy</th><th>Cost</th><th>Time</th></tr><tr class='text-center'><td>"+media+"</td><td>"+numOfCopies+"</td><td>"+forward+"</td><td>"+emailCopy+"</td><td>"+cost+"</td><td>"+time+" Bus. Days</td></tr></table>";
 		
@@ -1275,6 +1300,72 @@ function tableMaker(){
 }
 
 $('#addDoc').click(function(){
+	$('#docTypeForm').submit();
+});
+
+$('#docTypeForm').validate({
+
+	rules:{
+		docType: {
+			required: true
+		},
+		certRadio:{
+			required: true
+		},
+		legalRadio:{
+			required: true
+		},
+		media:{
+			required: true
+		},
+		numOfCopies:{
+			required: true
+		},
+		FAOpt:{
+			required: true
+		},
+		appNum: {
+			required: function(){$('#docType').val() == 'app'},
+			minlength: 8
+		},
+		assNum: {
+			required: function(){$('#docType').val() == 'ass'},
+			minlength: 10
+		},
+		FHNum: {
+			required: function(){$('#docType').val() == 'FH'},
+			minlength: 7
+		},
+		patNum: {
+			required: function(){$('#docType').val() == 'pat'},
+			minlength: 7
+		},
+		countries:{
+			required: '#legalYes[value="Yes"]:checked'
+		},
+		FAAdd: {
+			required: function(){$('#FAOpt').val() == "Yes"},
+			minlength: 2
+		},
+		copyRadio:{
+			required: '#certYes[value="Yes"]:checked'
+		}
+
+	},
+	messages: {
+		docType: "Please select a type of USPTO document",
+		media: "Please select the document media",
+		numOfCopies: "Please select the number of copies you need",
+		FAOpt: "Please select if the document need to be forwarded to an associate",
+		appNum: "Please enter a valid application number. Example: 01/234567",
+		assNum: "Please enter the reel/frame of the assignment. Example 012345/6789",
+		FHNum: "Please enter a valid patent or application number. Examples: 1,234,567 or 01/234567",
+		patNum: "Please enter a valid application number. Example 1,234,567",
+		FAAdd: "Please enter the address you would like the document forwarded",
+		countries: "Please select the country where the document will be used"
+	},
+	submitHandler: function(form){
+
 	var 
 		docType = $('#docType').val(),
 		cert = ($('input[name=certRadio]:checked', '#docTypeForm').val()),
@@ -1295,6 +1386,10 @@ $('#addDoc').click(function(){
 
 	if(emailCopy == null){
 		emailCopy = "N/A"
+	}
+
+	if(country == ''){
+		country = 'N/A'
 	}
 
 
@@ -1348,7 +1443,8 @@ $('#addDoc').click(function(){
 	$('html, body').animate({ scrollTop: $('#docCart').offset().top }, 'Fast');
 
 	
-	});
+	}
+});
 
 $('#anotherDoc').click(function(){
 	$('#documentLine').css('display', 'block');
@@ -1449,6 +1545,10 @@ $('#save').click(function(){
 
 		if(emailCopy == null){
 			emailCopy = "N/A"
+		}
+
+		if(country == ""){
+			country = "N/A"
 		}
 
 		if(medium == 'PDF'){

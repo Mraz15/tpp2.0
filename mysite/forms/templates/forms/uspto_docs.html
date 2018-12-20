@@ -76,8 +76,8 @@
               <div id="orderForm" clss="form">
                 <form id='docTypeForm' class="form-group">
                   <div class="form-group">
-                    <select id="docType" class="form-control">
-                      <option value="select">Document Type</option>
+                    <select id="docType" name="docType" class="form-control">
+                      <option value="">Document Type</option>
                       <option value="app">Applicaiton as Filed</option>
                       <option value="ass">Assignment</option>
                       <option value="FH">File History</option>
@@ -85,10 +85,10 @@
                     </select>
                   </div>
                   <div class="form-group" id="docNum">
-                    <input type="text" class="form-control" id="appNum" placeholder="Enter Application Number (Ex: 01/234567)" style="display: none">
-                    <input type="text" class="form-control" id="assNum" placeholder="Enter Assignment Number (Ex: 012345/6789)" style="display: none">
-                    <input type="text" class="form-control" id="FHNum" placeholder="Enter Patent Number (Ex: 0123456) or Application Number (Ex: 01/234567)" style="display: none">
-                    <input type="text" class="form-control" id="patNum" placeholder="Enter Patent Number (Ex: 0123456)" style="display: none">
+                    <input type="text" class="form-control" id="appNum" name="appNum" placeholder="Enter Application Number (Ex: 01/234567)" style="display: none">
+                    <input type="text" class="form-control" id="assNum" name="assNum" placeholder="Enter Assignment Number (Ex: 012345/6789)" style="display: none">
+                    <input type="text" class="form-control" id="FHNum"  name="FHNum" placeholder="Enter Patent Number (Ex: 0123456) or Application Number (Ex: 01/234567)" style="display: none">
+                    <input type="text" class="form-control" id="patNum" name="patNum" placeholder="Enter Patent Number (Ex: 0123456)" style="display: none">
                   </div>
                 <!-- </form> -->
                   <div class="form-group">
@@ -102,13 +102,14 @@
                           <label class="radio-inline">
                             <input type="radio" name="certRadio" id="certNo" value="No"/>No
                           </label>
+                          <label for="certRadio" class="error" style="display: none"></label>
                         </div>
                       <!-- </form> -->
                     </div>
                     <div class="form-group text-center col-lg-3 col-lg-offset-2 col-md-3 col-md-offset-2">
                       <!-- <form id="legalForm" > -->
                         <div class="form-group" style="display: inline;">
-                          <fieldset id="legalFieldset">
+                          <!-- <fieldset id="legalFieldset"> -->
                           <h5>Legalized</h5>
                           <label class="radio-inline">
                             <input type="radio" name="legalRadio" id="legalYes" value="Yes">Yes
@@ -116,7 +117,8 @@
                           <label class="radio-inline">
                             <input type="radio" name="legalRadio" id="legalNo" value="No">No
                           </label>
-                        </fieldset>
+                          <label for="legalRadio" class="error" style="display: none"></label>
+                        <!-- </fieldset> -->
                         </div>
                       <!-- </form> -->
                     </div>
@@ -141,7 +143,7 @@
                   <!-- <form id='finalForm'> -->
                     <div class="form-group">
                       <select class="form-control" id="countries" name="countries" onchange="" style="display: none">
-                                                <option value="No">Select Country</option> 
+                                                <option value="">Select Country</option> 
                                                 <option value="AFG">Afghanistan</option>
                                                 <option value="ALB">Albania</option>
                                                 <option value="DZA">Algeria</option>
@@ -339,15 +341,15 @@
                       </select>
                     </div>
                     <div class="form-group">          
-                      <select id="medium" class="form-control">
-                        <option value="select">Media</option>
+                      <select id="medium" name="media" class="form-control">
+                        <option value="">Media</option>
                         <option value="Paper">Paper</option>
                         <option value="PDF">Electronic</option>
                       </select>
                     </div>
                     <div class="form-group">
-                      <select id="numOfCopies" class="form-control">
-                        <option value="select">Number of Copies</option>
+                      <select id="numOfCopies" name="numOfCopies" class="form-control">
+                        <option value="">Number of Copies</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -376,8 +378,8 @@
                       </select>
                     </div>
                     <div class="form-group">          
-                        <select id="FAOpt" class="form-control">
-                          <option value="select">Forward Documents to Foreign Associate</option>
+                        <select id="FAOpt" name="FAOpt" class="form-control">
+                          <option value="">Forward Documents to Foreign Associate</option>
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                         </select>
@@ -390,14 +392,13 @@
 
                     </div>
                     <div class="form-group" style='display: none;' id="FAaddress">
-                        <label for="address">Foreign Associate's Address</label>
-                        <textarea class="form-control"  rows="5" placeholder="Foreign Associate's Address" id='FAAdd'></textarea>
+                        <label id="address">Associate's Address</label>
+                        <textarea class="form-control"  rows="5" placeholder="Associate's Address" id='FAAdd' name="FAAdd"></textarea>
                     </div>
                   <!-- </form> -->
                     <div id="copyOpt" class="form-group text-center col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4" style="display: none">
                       <!-- <form id="emailCopies" > -->
                         <div class="form-group" style="display: inline;">
-                          <fieldset id="copiesFieldset">
                           <h5>PDF Confirmation Copy Via Email</h5>
                           <label class="radio-inline">
                             <input type="radio" name="copyRadio" id="copiesYes" value="Yes">Yes
@@ -405,7 +406,7 @@
                           <label class="radio-inline">
                             <input type="radio" name="copyRadio" id="copiesNo" value="No">No
                           </label>
-                        </fieldset>
+                          <label for="copyRadio" class="error" style="display: none"></label>
                         </div>
                       <!-- </form> -->
                     </div>
@@ -464,7 +465,7 @@
                 </tr>
               </table>
               <p id="callNotice" style="display: none"><b>IMPORTANT:</b> We do not currenlty have the consulate fees for one or more of the countries selected. The Final Est. shown above <b>NOT</b> an accurate estimate. If you would like an estimate before you proceed with this order please call our office, or note in the special instructions box (provided below) that an estimate is needed before processing. Thank you.</p>
-              <p id="nonCertNotice" style="display: none"><b>IMPORTANT:</b> Pricing for one or more of the documents selected will be based on the total number of pages copied. We will not know the page total until the files are made availabe for us to copy. If you would like an estimate before you proceed, please note in the special insturctions box (provided below) that an estimate is needed before processing. Thank you.</p>
+              <p id="nonCertNotice" style="display: none"><b>IMPORTANT:</b> Pricing for one or more of the documents selected will be based on the total number of pages copied. We will not know the page total until the file(s) are made availabe for us to copy. If you would like an estimate before you proceed, please note in the special insturctions box (provided below) that an estimate is needed before processing. Thank you.</p>
             </div>
             <br>
 
