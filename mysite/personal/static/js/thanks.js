@@ -43,21 +43,29 @@ $('#testBtn').click(function(){
 
 $('#submit').click(function(){
     var formData = $('#orderForm').serializeArray();
-    var json_data = {}
+    var json_data = {};
+    var captchaResponse = grecaptcha.getResponse();
 
-    jQuery.each(formData, function() {
-        json_data[this.name] = this.value || '';
-    });
+    if (captchaResponse.length > 0){
 
-		$.post( "/email",  JSON.stringify(json_data), 
-		function(xml, textStatus, xhr){
-			if(xhr.status === 200){
-				alert("Successfully Submitted!");
-				window.location.replace("/confirmation");
-			} else{
-				alert("Submission Failed, Please Submit again!");
-			}
+        json_data.cResponse = captchaResponse;
+
+        jQuery.each(formData, function() {
+            json_data[this.name] = this.value || '';
         });
+
+            $.post( "/email",  JSON.stringify(json_data), 
+            function(xml, textStatus, xhr){
+                if(xhr.status === 200){
+                    alert("Successfully Submitted!");
+                    window.location.replace("/confirmation");
+                } else{
+                    alert("Submission Failed, Please Submit again!");
+                }
+            });
+    } else {
+        $('#capError').css('display','block');
+    }
 });
 
 

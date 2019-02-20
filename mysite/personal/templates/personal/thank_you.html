@@ -189,11 +189,25 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         {% endif %}
         {% endfor %}
     </div>
-</div>
-<div>
-    <a role="button" class="btn btn-primary col-lg-2 col-lg-offset-2 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0"
-        id='submit'>Submit Order</a>
-</div>
+    </div>
+    <!-- <form> -->
+    <div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2">
+                    <div style="background-color: #245580 !important" class="panel-heading">
+                        <h3 style=" color: white !important" class="panel-title text-center">Submit Order</h3>
+                    </div>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <div class="g-recaptcha form-group text-center" data-sitekey="6Ld9jlEUAAAAAIxIA9qbfa-xcA2AL5QyFn5yxfYg"></div>
+        <div id="capError" style="display: none;">
+            <p>Please complete the Captcha before submitting your order</p>
+        </div>
+        <div class="form-group text-center">
+            <button class="btn btn-primary" type="submit" id='submit'>Submit Order</button>
+        </div>
+        </div>
+    <!-- </form> -->
+    
+
+
 
 
 <div class="container col-lg-8 col-lg-offset-2 col-md-8 col-md-offest-2 col-sm-8 col-sm-offset-2" style="display: none">

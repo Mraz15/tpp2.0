@@ -1,9 +1,8 @@
 {% extends "personal/header.html" %}
-
 {% block content %}
 {% load staticfiles %}
 
-{% csrf_token %}
+
 
 
 <head>
@@ -42,9 +41,19 @@ Alexandria, VA 22314
   <div style="background-color: #245580 !important"  class="panel-heading">
     <h3 style=" color: white !important" class="panel-title text-center">Ask us a question!</h3>
   </div>
+
+
   <div class="panel-body">
-    <form id="contactForm">
-  <div class="form-group">
+    <form id="/contactUs/" method="post">
+    {% csrf_token %}
+    <!-- {{ form.as_p }} -->
+    {% for field in form %}
+    <div class="form-group text-center">
+      {{field}}
+    </div>
+    {% endfor %}
+    
+  <!-- <div class="form-group">
     <label for="first_name">First Name</label>
     <input type="text" class="form-control" id="first_name" name="first_name"  placeholder="First Name">
   </div>
@@ -65,9 +74,20 @@ Alexandria, VA 22314
     <label for="exampleInputEmail1">Question or Comments</label>
     <textarea class="form-control" id="question" name="question" rows="3" placeholder="Any questions or comments"></textarea>
   </div>
+  </div> -->
+
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+  <div class="form-group text-center col-lg-4 col-lg-offset-4">
+  <div class="g-recaptcha" data-sitekey="6Ld9jlEUAAAAAIxIA9qbfa-xcA2AL5QyFn5yxfYg"></div>
+  <!-- </div> -->
+  {% if messages %}
+  <div>
+    {% for message in messages %}
+       <p>{{ message }}</p>
+    {% endfor %}
   </div>
-  <div class="g-recaptcha col-lg-offset-4" data-sitekey="6Ld9jlEUAAAAAIxIA9qbfa-xcA2AL5QyFn5yxfYg"></div>
-   <div class="form-group text-center">
+  {% endif %}
+   <!-- <div class="form-group text-center"> -->
 
     <button type="submit" id="submit" class="btn btn-primary">Send Message</button>
   </div>
@@ -78,6 +98,4 @@ Alexandria, VA 22314
   </div>
 
 
-    
-<script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}  

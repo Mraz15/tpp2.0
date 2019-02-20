@@ -99,7 +99,7 @@ var tot = {
 		"FRA": 0,
 		"GAB": "call",
 		"GMB": 100,
-	    "GCC": 25,
+	    "GCC": 30,
 		"GEO": 0,
 		"DEU": 0,
 		"GHA": "call",

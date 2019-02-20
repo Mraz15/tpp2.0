@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^thanks$', views.thanks, name='thanks'),
     url(r'^confirmation$', views.confirmation, name='confirmation'),
     url(r'^contactEmail$', views.contactEmail, name='contactEmail'),
+    url(r'^contactConf$', views.contactConf, name='contactConfirmation'),
     ]
