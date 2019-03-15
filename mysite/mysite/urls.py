@@ -1,4 +1,4 @@
-"""mysite URL Configuration
+"""django_project URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
@@ -19,8 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('personal.urls')),
-    url(r'^legal$', include('legal.urls')),
+    url(r'^', include('legal.urls')),
     url(r'^PFS$', include('PFS.urls')),
     url(r'^', include('forms.urls')),
 ]
-

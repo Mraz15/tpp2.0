@@ -6,3 +6,6 @@ from django.shortcuts import render
 # Create your views here.
 def index(request):
     return render(request, 'legal/home.html')
+
+def hague(request):
+    return render(request, 'legal/hague.html')
